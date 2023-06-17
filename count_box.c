@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void rev_tab(int *tab, int size);
+
+
 // print numbers (char) from int
 void ft_putchar(char c)
 {
@@ -39,20 +42,12 @@ int count_view(int *ch)
         return 4;
     return -1;
 }
-int count_viall(int arr[4][4])
-{
-    int i = 0;
-    while (i < 4)
-    {
-        count_view(arr[i++]);
-    }
-    return (0);
-}
+
 
 // display solution table
 // 
 // only handle 4x4 table
-void print_tab(int arr[4][4])
+void print_matrix(int arr[4][4])
 {
     int i = 0;
     int j = 0;
@@ -72,6 +67,71 @@ void print_tab(int arr[4][4])
     }
 }
 
+// print 1d tab for testing purpose
+void print_tab(int arr[16])
+{
+    int i = 0;
+    while (i < 4)
+            ft_putchar(arr[i++]);
+}
+
+
+
+int count_rows(int arr[4][4])
+{
+    int i = 0;
+    int j = 0;
+    int counts_rl[16] = {}; 
+    
+    // count R-L
+    while (j < 4)
+    {
+        counts_rl[i] = count_view(arr[i++]);
+        j++;
+    }
+    int k = 0;
+     while (k < 4)
+        printf("%d", &arr[k++]);
+
+
+    // count R-R
+    int r_arr[4];
+    k = 0;
+
+    *r_arr = rev_tab(arr, 4);
+
+    k = 0;
+    while (k < 4)
+    {
+        r_arr[k] = arr[k];
+        k++;
+    }
+    k = 0;
+    while (k < 4)
+        printf("%d", r_arr[i++]);
+    k = 0;
+    printf("   ");
+
+
+    while (j < 4)
+    {
+        counts_rr[i] = count_view(r_arr[i++]);
+        j++;
+    }
+        
+
+
+
+    print_tab(counts_rl);
+    write(1, " ", 1);
+    print_tab(counts_rl);
+
+    return (*counts_rl);
+}
+
+
+
+
 
 
 // params in main
@@ -86,9 +146,9 @@ int main(void)
 
     int arr[4][4] = {{4, 3, 2, 1}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
 
-    print_tab(arr);
+    print_matrix(arr);
 
-    printf("\n\n%d", count_viall(arr));
+    printf("\n%d\n", count_rows(arr));
 
 //    count_view()
 

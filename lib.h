@@ -1,17 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lib.h                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: agabasov <agabasov@student.42lausanne      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 14:43:13 by agabasov          #+#    #+#             */
-/*   Updated: 2023/06/17 15:25:32 by agabasov         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "includes.h"
 
 size_t	ft_strlen(char *str);
 
 void	ft_putstr(char *str);
+
+int	*permute(int *prev, size_t size);
+
+int pow(int b, unsigned int e);

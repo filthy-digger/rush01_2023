@@ -71,7 +71,7 @@ int	*permute(int *prev, int *next, size_t size)
 			save_lower = prev + k;
 			save_upper = prev + k + 1;
 		}
-		else if (save_lower != NULL && save_lower < prev + k)
+		else if (save_lower != NULL && *save_lower < *(prev + k))
 			save_upper = prev + k;
 		*(next + k) = *(prev + k);
 		k++;

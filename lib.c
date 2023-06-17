@@ -31,6 +31,21 @@ int ft_power(int b, unsigned int e)
 		return b * (ft_power(b, e - 1));
 }
 
+unsigned int factorial(unsigned int n)
+{
+	if (n == 1)
+		return n;
+	else
+		return n * factorial(n - 1);
+}
+
+unsigned int choose(unsigned int n, unsigned int k)
+{
+	if (k == 0 || n < k)
+		return 0;
+	else
+		return factorial(n) / (factorial(n-k) * factorial(k));
+}
 
 //permute takes:
 //a pointer to the previous permutation - [prev]
@@ -58,11 +73,13 @@ int	*permute(int *prev, int *next, size_t size)
 		}
 		else if (save_lower != NULL && save_lower < prev + k)
 			save_upper = prev + k;
-		else
-			*(next + k) = *(prev + k);
+		*(next + k) = *(prev + k);
 		k++;
 	}
 	if (save_lower != NULL)
-			
+	{
+		*(next + (save_lower-prev)) = *save_upper;
+		*(next + (save_upper-prev)) = *save_lower;
+	}
 	return next;
 }

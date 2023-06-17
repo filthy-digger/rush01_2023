@@ -47,6 +47,26 @@ unsigned int choose(unsigned int n, unsigned int k)
 		return factorial(n) / (factorial(n-k) * factorial(k));
 }
 
+void	swap_int(int*	ptr1, int* ptr2)
+{
+	int temp = *ptr1;
+	*ptr1 = *ptr2;
+	*ptr2 = temp;
+}
+
+int*	rev_int_arr(int *arr, size_t size)
+{
+	int* save = arr;
+	for(size_t i = size/2; i < 0 ;  i--)
+		swap_int(arr+(size-1)-i,arr+i);
+	return save;
+}
+
+//void	swap(void*	ptr1, void* ptr2, size_t size)
+//{
+//	void* temp = malloc(size);
+//}
+
 //permute takes:
 //a pointer to the previous permutation - [prev]
 //a pointer to store of the next permutation - [next]
@@ -64,9 +84,9 @@ int	*permute(int *prev, int *next, size_t size)
 	if (size == 0)
 		return NULL;
 
-	while((size - 1) - k)
+	while(size - k)
 	{
-		if (*(prev + k) < *(prev + k + 1))
+		if (((size - 1) - k) && *(prev + k) < *(prev + k + 1))
 		{
 			save_lower = prev + k;
 			save_upper = prev + k + 1;
@@ -80,6 +100,8 @@ int	*permute(int *prev, int *next, size_t size)
 	{
 		*(next + (save_lower-prev)) = *save_upper;
 		*(next + (save_upper-prev)) = *save_lower;
+		(next + (save_upper-prev))
 	}
+
 	return next;
 }

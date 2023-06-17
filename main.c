@@ -1,18 +1,13 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: agabasov <agabasov@student.42lausanne      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/17 14:43:14 by agabasov          #+#    #+#             */
-/*   Updated: 2023/06/17 15:45:11 by agabasov         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "lib.h"
 
 int main(void)
 {
-	int var = 0;
+	size_t size = 4;
+	int	*inititial_perm = malloc(size * sizeof(int));
+	if (inititial_perm == NULL)
+		return 1;
+	for(size_t i = 0; i<size; i++)
+		inititial_perm[i] = i+1;
+
+	return 0;
 }

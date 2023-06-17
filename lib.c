@@ -57,8 +57,8 @@ void	swap_int(int*	ptr1, int* ptr2)
 int*	rev_int_arr(int *arr, size_t size)
 {
 	int* save = arr;
-	for(size_t i = size/2; i < 0 ;  i--)
-		swap_int(arr+(size-1)-i,arr+i);
+	for(size_t i = 0; i < size ; size--, i++)
+		swap_int(arr+i,arr+size-1);
 	return save;
 }
 
@@ -100,7 +100,7 @@ int	*permute(int *prev, int *next, size_t size)
 	{
 		*(next + (save_lower-prev)) = *save_upper;
 		*(next + (save_upper-prev)) = *save_lower;
-		(next + (save_upper-prev))
+		rev_int_arr(next + (save_lower-prev) + 1, size - (save_lower-prev) - 1);
 	}
 
 	return next;

@@ -152,7 +152,7 @@ int *transpose_arr(const int arr[4][4], int transp_arr[4][4])
     return (*transp_arr);
 }
 
-int	ft_strcmp(char *s1, char *s2)
+int	ft_intcmp(int *s1, int *s2)
 {
 	int	i;
 	int	count;

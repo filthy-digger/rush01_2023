@@ -135,3 +135,20 @@ void print_tab(int arr[16])
          
 } */
 
+// takes a 2d array as input
+//
+// yield a tranposed array
+int transp_array(int **arr)
+{
+    int transp_arr[4][4];
+        int j = 0;
+        while (j < 4)
+        {
+            transp_arr[0][j] = arr[j][0];
+            transp_arr[1][j] = arr[j][1];
+            transp_arr[2][j] = arr[j][2];
+            transp_arr[3][j] = arr[j][3];
+            j++;
+        }
+    return (transp_arr);
+}

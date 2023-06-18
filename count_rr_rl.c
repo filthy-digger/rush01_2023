@@ -10,7 +10,7 @@ void ft_putchar(char c);
 int count_view(int *ch);
 void print_tab(int arr[16]);
 void print_matrix(int arr[4][4]);
-
+int transp_arr(int**arr);
 
 
 // count nbr of boxes seen from all POV (WIP for CU and CD)
@@ -25,7 +25,10 @@ void count_rows(int arr[4][4])
 
     // FUNCTION
     // create tranposed array with column values to check
-    int transp_arr[4][4];
+    
+
+    int r_arr[4][4] = transp_arr(arr);
+    /* int transp_arr[4][4];
     j = 0;
     while (j < 4)
     {
@@ -34,7 +37,9 @@ void count_rows(int arr[4][4])
         transp_arr[2][j] = arr[j][2];
         transp_arr[3][j] = arr[j][3];
         j++;
-    }
+    } */
+
+
 
     // count C-U
     j = 0;

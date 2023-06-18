@@ -1,14 +1,7 @@
 #include "lib.h"
 
 // imports
-void rev_tab(int *tab, int size);
-void count_row(int arr[4][4]);
-void ft_putchar(char c);
-int count_view(int *ch);
-void print_tab(int arr[16]);
-void print_matrix(int arr[4][4]);
-int transpose_arr(int arr[4][4], int transp_arr[4][4]);
-int intcmp(int *s1,int *s2);
+
 
 // count nbr of boxes seen from all POV (CU CD RR RL)
 // writes results to "results" array in main

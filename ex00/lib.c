@@ -1,4 +1,11 @@
+#include <stdbool.h>
+#include "lib.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include "includes.h"
+
+void print_matrix(int **arr, size_t rows, size_t cols);
 
 size_t	ft_strlen(char *str)
 {
@@ -104,4 +111,257 @@ int	*permute(int *prev, int *next, size_t size)
 		rev_int_arr(next + (save_lower-prev) + 1, size - (save_lower-prev) - 1);
 	}
 	return next;
+}
+
+// print numbers (char) from int
+void ft_putchar(char c)
+{
+	c = c + 48;
+	write(1, &c, 1);
+}
+
+void	ft_swap(int *a, int*b)
+{
+	int	temp;
+
+	temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+void	rev_tab(int *tab, int size)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = size - 1;
+	while (i < j)
+	{
+		ft_swap(&tab[i], &tab[j]);
+		i++;
+		j--;
+	}
+}
+
+
+void    transp_matrix(int arr[4][4])
+{
+    int r_arr[4][4];
+    int j = 0;
+    while (j < 4)
+    {
+        r_arr[0][j] = arr[j][0];
+        r_arr[1][j] = arr[j][1];
+        r_arr[2][j] = arr[j][2];
+        r_arr[3][j] = arr[j][3];
+        j++;
+    }
+}
+
+// takes an 1 dimensional array of int as input
+// calculates visible boxes for view
+//
+// return - 1 == error
+// return 1, 2, 3,4 == number of visible boxes
+int count_view(int *ch)
+{
+    int i = 0;
+    int count = 0;
+
+    if (ch[i] + ch[i + 1] + ch[i + 2] + ch[i + 3] != 10)
+        return -1;
+
+    if (ch[i] == 4)
+        return 1;
+
+    if (((ch[i] > ch[i + 1]) && (ch[i] < ch[i + 2]) && (ch[i + 2] > ch[i + 3]))
+    || ((ch[i] > ch[i + 1]) && (ch[i] > ch[i + 2]) && (ch[i] < ch[i + 3]))
+    || ((ch[i] < ch[i + 1]) && (ch[i + 1] > ch[i + 2]) && (ch[i + 1] > ch[i + 3])))
+        return 2;
+
+    if ((ch[i] > ch[i + 1] && ch[i] > ch[i + 2] && ch[i + 2] < ch[i + 3])
+    || (ch[i] < ch[i + 1] && ch[i + 1] > ch[i + 2] &&  ch[i + 1] < ch[i + 3])
+    || (ch[i] > ch[i + 1] && ch[i + 1] < ch[i + 2] &&  ch[i + 1] < ch[i + 3])
+    || (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] &&  ch[i + 2] > ch[i + 3]))
+        return 3;
+
+    if (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] && ch[i + 2] < ch[i + 3])
+        return 4;
+    return -1;
+}
+
+void count_row(int arr[4][4])
+{
+    size_t size = 4;
+    int *counts_rl = malloc(size * sizeof(int));
+    int *counts_rr = malloc(size * sizeof(int));
+    int j = 0;
+
+    // count R-L
+    while (j < 4)
+    {
+        counts_rl[j] = count_view(arr[j]);
+        j++;
+    }
+
+    // count R-R
+    // reverse tab
+    int i = 0;
+    while (i < 4)
+        rev_tab(arr[i++], 4);
+
+    write(1, "\n", 1);
+
+    j = 0;
+    while (j < 4)
+    {
+        counts_rr[j] = count_view(arr[j]);
+        j++;
+    }
+}
+
+
+// takes 2d array as input, and output array to transpose to
+//
+// yield a tranposed array
+int **transpose_arr(const int arr[4][4], int transp_arr[4][4])
+{
+    int j = 0;
+    while (j < 4)
+    {
+        transp_arr[0][j] = arr[j][0];
+        transp_arr[1][j] = arr[j][1];
+        transp_arr[2][j] = arr[j][2];
+        transp_arr[3][j] = arr[j][3];
+        j++;
+    }
+    return (transp_arr);
+}
+
+int	ft_intcmp(int *s1, int *s2)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (count == 0)
+		count += s1[i] - s2[i];
+	return (count);
+}
+
+void print_matrix(int **arr, size_t rows, size_t cols)
+{
+	size_t i = 0;
+	size_t j = 0;
+
+	while (j < rows)
+	{
+		i = 0;
+		while (i < cols)
+		{
+			ft_putchar(arr[j][i]);
+			if (i < cols - 1)
+				write(1, " ", 1);
+			i++;
+		}
+		write(1, "\n", 1);
+		j++;
+	}
+}
+
+void print_tab(int *arr, size_t size)
+{
+	size_t i = 0;
+	while (i < size)
+		ft_putchar(arr[i++]);
+}
+
+void ft_puterr(char* error_detail)
+{
+	if (error_detail != NULL)
+	{
+		char *errormsg = "error:\n";
+		write(2, errormsg, ft_strlen(errormsg));
+		write(2, error_detail, ft_strlen(error_detail));
+	}
+	else
+	{
+		char *errormsg = "error\n";
+		write(2, errormsg, ft_strlen(errormsg));
+	}
+}
+
+//ft_findspc takes a NUL-terminated string - "str"
+//returns a pointer to the first space(ASCII 32, ' ') in the string
+//otherwise return a NULL
+char*	ft_findspc(char* str)
+{
+	char* res = NULL;
+	int i;
+	i = 0;
+	while (str[i] != '\0')
+	{
+	 if (str[i] == ' ')
+	 {
+		 res = &str[i];
+	 }
+	 i++;
+	}
+	return res;
+}
+
+//ft_countspc takes a NUL-terminated string - "str"
+//returns the number of space(ASCII 32, ' ') chars in the string
+int	ft_countspc(char* str)
+{
+	int count = 0 ;
+	int i;
+	i = 0;
+	while (str[i] != '\0')
+	{
+	  if(str[i] == ' ')
+	  {
+		  count++;
+	  }
+	 i++;
+	}
+	return count;
+}
+
+bool check_string(char* str, unsigned int n)
+{
+	size_t format_spc_count = ft_power(n, 2) - 1;
+	size_t format_length = ft_power(n, 2) + format_spc_count;
+	size_t i = 0;
+	if (ft_strlen(str) == format_length  && ft_countspc(str)  == format_spc_count)
+	{
+	while(i < format_length)
+	{
+		if (!(('0' < str[i] && str[i] <= n + 48) || str[i] == ' '))
+		{
+			return false;
+		}
+		i++;
+	}
+	return true;
+	}
+	else
+		return false;
+}
+
+bool check_num(int *arr, int n, size_t size)
+{
+	size_t i;
+	i = 0;
+	while(i < size)
+	{
+		if (arr[i] <= 0 || arr[i] > n)
+		{
+			return false;
+		}
+		i++;
+	}
+	return true;
 }

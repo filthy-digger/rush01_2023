@@ -10,14 +10,12 @@ add_executable(permute
         ex00/includes.h
         ex00/lib.c
         ex00/lib.h
-        #        lib2.c
         ex00/main.c
-        ex00/lib2.h)
+        )
 add_executable(rush-01
         ex00/count_rr_rl.c
         ex00/includes.h
         ex00/lib.c
         ex00/lib.h
-        ex00/lib2.c
         ex00/main.c
-        ex00/lib2.h)
+        )

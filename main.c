@@ -48,7 +48,11 @@ void print_tab(int *arr, size_t size)
 int main(int argc, char **argv)
 {
 	if (argc != 2)
-		return 1;
+    {
+        char *str = "error\n";
+        write(2, str, ft_strlen(str));
+        return 1;
+    }
 	size_t	size = (size_t)(argv[1][0] - 48);
 	size_t	cols = size;
 	size_t	rows = factorial(size);

@@ -6,7 +6,7 @@
 /*   By: agabasov <agabasov@student.42lausanne      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 22:15:33 by agabasov          #+#    #+#             */
-/*   Updated: 2023/06/18 18:34:34 by lfick            ###   ########.fr       */
+/*   Updated: 2023/06/18 19:47:20 by lfick            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,42 +100,73 @@ int	ft_countspc(char* str)
 	return count;
 }
 
-//check_string takes a pointer to a NUL-terminated string - "str"
+//check_string takes:
+//"str" - a pointer to a NUL-terminated string
+//"n" - square side length
 //
 //returns a boolean:
-//true if the string follows the ruhs01 format
+//true if the string follows the rush01 format
 //false otherwise
 //
 //format is:
-//length is 31
-//space count is 15
-bool check_string(char* str)
+//"space_count" = n^2 - 1
+//length =  n^2  + "space_count"
+bool check_string(char* str, unsigned int n)
 {
-	size_t format_len = 31;
-	int format_spc_count = 15;
-	if (ft_strlen(str) == 31 && ft_countspc(str)  == 15)
-		return true;
+	size_t format_spc_count = ft_power(n, 2) - 1;
+	size_t format_length = ft_power(n, 2) + format_spc_count;
+	size_t i = 0;
+	if (ft_strlen(str) == format_length  && ft_countspc(str)  == format_spc_count)
+	{
+	while(i < format_length)
+	{
+		if (!(('0' < str[i] && str[i] <= n + 48) || str[i] == ' '))
+		{
+			return false; 
+		}
+		i++;
+	}
+	return true;
+	}
 	else
 		return false;
 }
-//"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 2"	
+//check_num takes "arr" - array of integers of length "size"
+//checks for bounds of entries of "arr" to be:
+//arr[i] > 0
+//arr[i] <= n
+bool check_num(int *arr, int n, size_t size)
+{
+	size_t i;
+	i = 0;
+	while(i < size)
+	{
+		if (arr[i] <= 0 || arr[i] > n)
+		{
+			return false; 
+		}
+		i++;
+	}
+	return true;
+}
+
+//"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 int main(int argc, char **argv)
 {
+	int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
+	int badarr[16] = {0, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 5, 2, 0};
+   	int *testarr = okarr;
 	if (argc != 2)
     {
         ft_puterr(NULL);
         return 1;
     }
-	if (check_string(argv[1]))
+	if (!check_string(argv[1], 4))
 	{
-		ft_putstr("ok format\n");
-		return 0;
-	}
-	else
-    {
-        ft_puterr("bad format");
+        ft_puterr("bad format\n");
         return 1;
-    }
+	}
+
 	size_t	size = (size_t)(argv[1][0] - 48);
 	size_t	cols = size;
 	size_t	rows = factorial(size);

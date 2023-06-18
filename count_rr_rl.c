@@ -2,7 +2,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+// import
 void rev_tab(int *tab, int size);
+void count_row(int arr[4][4]);
 
 
 // print numbers (char) from int
@@ -12,6 +15,7 @@ void ft_putchar(char c)
     write(1, &c, 1);
 }
 
+// count visible boxes logic for a row
 int count_view(int *ch)
 {
     int i = 0;
@@ -38,25 +42,8 @@ int count_view(int *ch)
     return -1;
 }
 
-void print_matrix(int arr[4][4])
-{
-    int i = 0;
-    int j = 0;
+// print 4x4 matrix
 
-    while (j < 4)
-    {
-        i = 0;
-        while (i < 4)
-        {
-            ft_putchar(arr[j][i]);
-            if (i < 3)
-                write(1, " ", 1);
-            i++;
-        }
-        write(1, "\n", 1);
-        j++;
-    }
-}
 
 // print 1d tab for testing purpose
 void print_tab(int arr[16])
@@ -67,62 +54,68 @@ void print_tab(int arr[16])
 }
 
 
-
+// count nbr of boxes seen from all POV (WIP for CU and CD)
 void count_rows(int arr[4][4])
 {
     int i = 0;
     int j = 0;
+    // create array to store results
     int counts_rl[4] = {}; 
     int counts_rr[4] = {}; 
     int counts_cu[4] = {}; 
+    int counts_cd[4] = {}; 
 
-    
+
     // FUNCTION
-    // count R-L
+    // create tranposed array with column values to check
+    int transp_arr[4][4];
+    j = 0;
     while (j < 4)
     {
-        counts_rl[j] = count_view(arr[j]);
+        transp_arr[0][j] = arr[j][0];
+        transp_arr[1][j] = arr[j][1];
+        transp_arr[2][j] = arr[j][2];
+        transp_arr[3][j] = arr[j][3];
         j++;
     }
 
-    // count R-R
+    // count C-U
+    while (j < 4)
+    {
+        counts_cu[j] = count_view(transp_arr[j]);
+        j++;
+    }
+    // count C-D
     // reverse tab
     i = 0;
     while (i < 4)
-        rev_tab(arr[i++], 4);
+        rev_tab(transp_arr[i++], 4);
 
     write(1, "\n", 1);
 
     j = 0;
     while (j < 4)
     {
-        counts_rr[j] = count_view(arr[j]);
+        counts_cd[j] = count_view(transp_arr[j]);
         j++;
     }
+    
 
-    i = 0; 
-    j = 0;
-    // count C-U
-    while (i < 4)
-    {
-        while (j < 4)
-        {
-            counts_cu[j] = count_view(&arr[i][j]);
-            j++;
-        }
-        i++;
-    }
+    count_row(arr[4][4]);
+    
 
-
-
-
+     //       counts_cu[j] = count_view(&arr[i][j]);
 
     // PRINTING FOR TESTING 
-    print_tab(counts_rl);
+   print_tab(counts_rl);
+   write(1, "\n", 1);
+   print_tab(counts_rr);
+   write(1, "\n", 1);
+   print_tab(counts_cu);
     write(1, "\n", 1);
-    print_tab(counts_rr);
-    write(1, "\n", 1);
-    print_tab(counts_cu);
+ //  print_tab(counts_cd);
+
+
 }
 
 
@@ -132,9 +125,7 @@ void count_rows(int arr[4][4])
 // params in main
 int main(void)
 {
-    int arr[4][4] = {{4, 3, 2, 1}, {2, 4, 1, 3}, {3, 1, 4, 2}, {1, 2, 3, 4}};
-
-    print_matrix(arr);
+    int arr[4][4] = {{1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}};
 
     count_rows(arr);
 

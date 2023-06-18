@@ -77,13 +77,14 @@ int*	rev_int_arr(int *arr, size_t size)
 //assumes proper malloc of prev and next
 int	*permute(int *prev, int *next, size_t size)
 {
-	int* save_lower = NULL;
-	int* save_upper = NULL;
-	size_t k = 0;
+    int *save_lower;
+    int *save_upper;
 
+    save_lower = NULL;
+    save_upper = NULL;
+	size_t k = 0;
 	if (size == 0)
 		return NULL;
-
 	while(size - k)
 	{
 		if (((size - 1) - k) && *(prev + k) < *(prev + k + 1))
@@ -102,6 +103,5 @@ int	*permute(int *prev, int *next, size_t size)
 		*(next + (save_upper-prev)) = *save_lower;
 		rev_int_arr(next + (save_lower-prev) + 1, size - (save_lower-prev) - 1);
 	}
-
 	return next;
 }

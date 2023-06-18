@@ -224,7 +224,7 @@ void count_row(int arr[4][4])
 // takes 2d array as input, and output array to transpose to
 //
 // yield a tranposed array
-int **transpose_arr(const int arr[4][4], int transp_arr[4][4])
+int **transpose_arr(const int **arr, int **transp_arr)
 {
     int j = 0;
     while (j < 4)
@@ -427,7 +427,7 @@ int checker(int input[16], int result[16])
 
 // count nbr of boxes seen from all POV (CU CD RR RL)
 // writes results to "results" array in main
-void count_rows(int arr[4][4], int *dest_arr)
+void count_rows(int **arr, int *dest_arr)
 {
     int i = 0;
     int j = 0;
@@ -436,7 +436,7 @@ void count_rows(int arr[4][4], int *dest_arr)
     int *result_counter = malloc(size * sizeof(int));
 
     // create tranposed array with column values to check
-    int transp_arr[4][4];
+    int **transp_arr = malloc_matrix(size, size);
     transpose_arr(arr, transp_arr);
 
     // count C-U
@@ -456,7 +456,7 @@ void count_rows(int arr[4][4], int *dest_arr)
     // count R-L
     j = 0;
     while (j < 4)
-        result_counter[k++] = count_view(arr[j++]);
+        result_counter[k++] = count_view(&(arr[j++][0]));
 
     // count R-R (reverse tab)
     j = 0;
@@ -476,10 +476,14 @@ void count_rows(int arr[4][4], int *dest_arr)
 
 bool sudoku_alt(int **matrix, size_t n)
 {
-    n = 4;
-    int i, j, k = 0;
+    int i;
+    int j;
+    int k;
+
+    i = 0;
     while (i < n)
     {
+        j = 0;
         while (j < n - 1)
         {
             k = j + 1;

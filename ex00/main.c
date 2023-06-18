@@ -33,6 +33,29 @@
 //"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 int main(int argc, char **argv)
 {
+    size_t size;
+
+    size = 4;
+    if (argc == 3) {
+        size = (size_t) (argv[2][0] - 48);
+    }
+    int **permutation_matrix = gen_permutations(size);
+    //print_matrix(permutation_matrix, factorial(size), size);
+
+
+    int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
+    int badarr[16] = {0, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 5, 2, 0};
+    int *testarr = okarr;
+    if (argc != 2)
+    {
+        ft_puterr(NULL);
+        return 1;
+    }
+    if (!check_string(argv[1], 4))
+    {
+        ft_puterr("bad format\n");
+        return 1;
+    }
     int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};  // sample matrix
     int u_input[16] = {3, 3, 2, 1, 2, 1, 2, 4, 4, 2, 1, 2, 1, 2, 3, 3}; // sample user input
     int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
@@ -45,38 +68,6 @@ int main(int argc, char **argv)
     printf("%d", checker(u_input, results));
 
     return 0;
-    int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
-	int badarr[16] = {0, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 5, 2, 0};
-   	int *testarr = okarr;
-	if (argc != 2)
-    {
-        ft_puterr(NULL);
-        return 1;
-    }
-	if (!check_string(argv[1], 4))
-	{
-        ft_puterr("bad format\n");
-        return 1;
-	}
-
-	size_t	size = (size_t)(argv[1][0] - 48);
-	size_t	cols = size;
-	size_t	rows = factorial(size);
-	int**	matrix = (int**)malloc(rows * sizeof(int*));
-	if (matrix == NULL)
-		return 1;
-	for(size_t i = 0; i < rows; i++)
-	{
-		matrix[i] = (int *)malloc(cols * sizeof(int));
-		if (matrix[i] == NULL)
-			return 1;
-		if (i == 0) 
-			for(size_t j = 0; j<cols; j++)
-				matrix[i][j] = j+1;
-		else
-			permute(matrix[i-1], matrix[i], cols);
-	}
-	print_matrix(matrix, rows, cols);
 
 	//int*	perm_1 = malloc(size * sizeof(int));
 	//for(size_t j = 0; j<size; j++)

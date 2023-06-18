@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include "includes.h"
 
-void print_matrix(int **arr, size_t rows, size_t cols);
 
 size_t	ft_strlen(char *str)
 {
@@ -269,6 +268,51 @@ void print_matrix(int **arr, size_t rows, size_t cols)
 		write(1, "\n", 1);
 		j++;
 	}
+}
+
+int **malloc_matrix_rows(size_t rows) {
+    int**	matrix = (int**)malloc(rows * sizeof(int*));
+    if (matrix == NULL)
+        return NULL;
+    return matrix;
+}
+
+int **malloc_matrix(size_t cols, size_t rows) {
+    int**	matrix;
+
+    matrix = malloc_matrix_rows(rows);
+    if (matrix == NULL)
+        return NULL;
+    for(size_t i = 0; i < rows; i++)
+    {
+        matrix[i] = (int *)malloc(cols * sizeof(int));
+        if (matrix[i] == NULL)
+            return NULL;
+    }
+    return matrix;
+}
+
+int **gen_permutations(size_t size) {
+    size_t cols;
+    size_t rows;
+    int **matrix;
+
+    cols = size;
+    rows = factorial(size);
+    matrix = malloc_matrix(cols, rows);
+
+    if (matrix == NULL)
+        return NULL;
+
+    for(size_t i = 0; i < rows; i++)
+    {
+        if (i == 0)
+            for(size_t j = 0; j<cols; j++)
+                matrix[i][j] = j+1;
+        else
+            permute(matrix[i-1], matrix[i], cols);
+    }
+    return matrix;
 }
 
 void print_tab(int *arr, size_t size)

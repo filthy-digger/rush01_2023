@@ -315,6 +315,32 @@ int **gen_permutations(size_t size) {
     return matrix;
 }
 
+int **gen_solution(size_t size)
+{
+    size_t permutations;
+    int **solution_matrix;
+    int **permutation_matrix;
+
+    permutation_matrix = gen_permutations(size);
+    solution_matrix = malloc_matrix(size, size);
+    permutations = factorial(size);
+    for (int i = 0; i < permutations; i++) {
+        solution_matrix[i] = permutation_matrix[i];
+        for (int j = 0; i < permutations; j++){
+            solution_matrix[j] = permutation_matrix[j];
+            for (int k = 0; i < permutations; k++)
+            {
+                for (int l = 0; l < permutations; l++) {
+
+                }
+
+            }
+
+        }
+
+    }
+}
+
 void print_tab(int *arr, size_t size)
 {
 	size_t i = 0;

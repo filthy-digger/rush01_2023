@@ -2,86 +2,81 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+
+// imports
 void rev_tab(int *tab, int size);
+void count_row(int arr[4][4]);
+void ft_putchar(char c);
+int count_view(int *ch);
+void print_tab(int arr[16]);
+void print_matrix(int arr[4][4]);
+int transp_arr(int**arr);
 
 
-// print numbers (char) from int
-void ft_putchar(char c)
-{
-    c = c + 48;
-    write(1, &c, 1);
-}
-
-int count_view(int *ch)
-{
-    int i = 0;
-    int count = 0;
-
-    if (ch[i] + ch[i + 1] + ch[i + 2] + ch[i + 3] != 10)
-        return -1;
-
-    if (ch[i] == 4)
-        return 1;
-
-    if (((ch[i] > ch[i + 1]) && (ch[i] < ch[i + 2]) && (ch[i + 2] > ch[i + 3])) 
-    || ((ch[i] > ch[i + 1]) && (ch[i] > ch[i + 2]) && (ch[i] < ch[i + 3])) 
-    || ((ch[i] < ch[i + 1]) && (ch[i + 1] > ch[i + 2]) && (ch[i + 1] > ch[i + 3])))
-        return 2;
-
-    if ((ch[i] > ch[i + 1] && ch[i] > ch[i + 2] && ch[i + 2] < ch[i + 3]) 
-    || (ch[i] < ch[i + 1] && ch[i + 1] > ch[i + 2] &&  ch[i + 1] < ch[i + 3]) 
-    || (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] &&  ch[i + 2] > ch[i + 3]))
-        return 3;
-
-    if (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] && ch[i + 2] < ch[i + 3])
-        return 4;
-    return -1;
-}
-
-void print_matrix(int arr[4][4])
-{
-    int i = 0;
-    int j = 0;
-
-    while (j < 4)
-    {
-        i = 0;
-        while (i < 4)
-        {
-            ft_putchar(arr[j][i]);
-            if (i < 3)
-                write(1, " ", 1);
-            i++;
-        }
-        write(1, "\n", 1);
-        j++;
-    }
-}
-
-// print 1d tab for testing purpose
-void print_tab(int arr[16])
-{
-    int i = 0;
-    while (i < 4)
-            ft_putchar(arr[i++]);
-}
-
-
-
+// count nbr of boxes seen from all POV (WIP for CU and CD)
 void count_rows(int arr[4][4])
 {
     int i = 0;
     int j = 0;
-    int counts_rl[4] = {}; 
-    int counts_rr[4] = {}; 
-    int counts_cu[4] = {}; 
 
-    
+    // create array to store results
+    size_t size = 4;
+    int *result_counter = malloc(size * sizeof(int));
+
     // FUNCTION
-    // count R-L
+    // create tranposed array with column values to check
+    
+
+    int r_arr[4][4] = transp_arr(arr);
+    /* int transp_arr[4][4];
+    j = 0;
     while (j < 4)
     {
-        counts_rl[j] = count_view(arr[j]);
+        transp_arr[0][j] = arr[j][0];
+        transp_arr[1][j] = arr[j][1];
+        transp_arr[2][j] = arr[j][2];
+        transp_arr[3][j] = arr[j][3];
+        j++;
+    } */
+
+
+
+    // count C-U
+    j = 0;
+    while (j < 4)
+    {
+        result_counter[j] = count_view(transp_arr[j]);
+        j++;
+    }
+    
+
+    printf("transp arr : \n");
+    print_matrix(transp_arr);
+
+    // count C-D
+    // reverse tab
+    while (i < 4)
+        rev_tab(transp_arr[i++], 4);
+
+    printf("transp rev arr : \n");
+    print_matrix(transp_arr);
+
+    printf("arr : \n");
+    print_matrix(arr);
+
+    j = 0;
+    while (j < 8)
+    {
+        result_counter[j + 4] = count_view(transp_arr[j]);
+        j++;
+    }
+    
+
+    // count R-L
+    j = 0;
+    while (j < 12)
+    {
+        result_counter[j + 8] = count_view(arr[j]);
         j++;
     }
 
@@ -91,38 +86,28 @@ void count_rows(int arr[4][4])
     while (i < 4)
         rev_tab(arr[i++], 4);
 
-    write(1, "\n", 1);
+
+     printf("rev arr : \n");
+    print_matrix(arr);
+
 
     j = 0;
-    while (j < 4)
+    while (j < 16)
     {
-        counts_rr[j] = count_view(arr[j]);
+        result_counter[j + 12] = count_view(arr[j]);
         j++;
     }
 
-    i = 0; 
-    j = 0;
-    // count C-U
-    while (i < 4)
-    {
-        while (j < 4)
-        {
-            counts_cu[j] = count_view(&arr[i][j]);
-            j++;
-        }
-        i++;
-    }
+    
 
-
-
-
+     //       counts_cu[j] = count_view(&arr[i][j]);
 
     // PRINTING FOR TESTING 
-    print_tab(counts_rl);
-    write(1, "\n", 1);
-    print_tab(counts_rr);
-    write(1, "\n", 1);
-    print_tab(counts_cu);
+   print_tab(result_counter);
+   write(1, "\n", 1);
+ //  print_tab(counts_cd);
+
+
 }
 
 
@@ -132,9 +117,7 @@ void count_rows(int arr[4][4])
 // params in main
 int main(void)
 {
-    int arr[4][4] = {{4, 3, 2, 1}, {2, 4, 1, 3}, {3, 1, 4, 2}, {1, 2, 3, 4}};
-
-    print_matrix(arr);
+    int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};
 
     count_rows(arr);
 

@@ -315,30 +315,33 @@ int **gen_permutations(size_t size) {
     return matrix;
 }
 
-int **gen_solution(size_t size)
+int **gen_solution(size_t size, int* input)
 {
     size_t permutations;
     int **solution_matrix;
     int **permutation_matrix;
+    int **solution_matrix_transpose;
+    int *views;
 
+
+    views = malloc(ft_power(size, 2) * sizeof(int));
     permutation_matrix = gen_permutations(size);
     solution_matrix = malloc_matrix(size, size);
+    solution_matrix_transpose = malloc_matrix(size, size);
     permutations = factorial(size);
     for (int i = 0; i < permutations; i++) {
-        solution_matrix[i] = permutation_matrix[i];
         for (int j = 0; i < permutations; j++){
-            solution_matrix[j] = permutation_matrix[j];
             for (int k = 0; i < permutations; k++)
-            {
                 for (int l = 0; l < permutations; l++) {
-
+                    solution_matrix[i] = permutation_matrix[l];
+                    transpose_arr(solution_matrix, solution_matrix_transpose);
+                    if ((sudoku_alt(solution_matrix, size) && (sudoku_alt(solution_matrix_transpose, size)))) {
+                        count_rows(solution_matrix, views);
+                        if (checker(views, input))
+                            return solution_matrix;
+                    }
                 }
-
-            }
-
-        }
-
-    }
+    return NULL;
 }
 
 void print_tab(int *arr, size_t size)

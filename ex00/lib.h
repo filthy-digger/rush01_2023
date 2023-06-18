@@ -57,3 +57,5 @@ int **gen_permutations(size_t size);
 int** malloc_matrix(size_t cols, size_t rows);
 
 int **malloc_matrix_rows(size_t rows);
+
+int **gen_solution(size_t size, int* input);

@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     if (argc == 3) {
         size = (size_t) (argv[2][0] - 48);
     }
-    int **permutation_matrix = gen_permutations(size);
+///    int **permutation_matrix = gen_permutations(size);
     //print_matrix(permutation_matrix, factorial(size), size);
 
 
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    int arr[4][4] = {{1, 2, 3, 4},
+    /*int arr[4][4] = {{1, 2, 3, 4},
                      {2, 1, 4, 3},
                      {4, 3, 1, 2},
                      {3, 4, 2, 1}};  // sample matrix
@@ -68,25 +68,36 @@ int main(int argc, char **argv)
     matrix[1][0] = 2; matrix[1][1] = 3; matrix[1][2] = 4; matrix[1][3] = 1;
     matrix[2][0] = 4; matrix[2][1] = 2; matrix[2][2] = 1; matrix[2][3] = 3;
     matrix[3][0] = 3; matrix[3][1] = 4; matrix[3][2] = 2; matrix[3][3] = 1;
-    transpose_arr(matrix, matrix_transpose);
+    transpose_arr(matrix, matrix_transpose);*/
 
-    if (!(sudoku_alt(matrix, size) && (sudoku_alt(matrix_transpose, size)))) {
+ /*   if (!(sudoku_alt(matrix, size) && (sudoku_alt(matrix_transpose, size)))) {
         if (!(sudoku_alt(matrix, size)))
             ft_puterr("bad sudoku\n");
         if (!(sudoku_alt(matrix_transpose, size)))
             ft_puterr("bad sudoku transpose\n");
         return 1;
-    }
-    return 0;
+    }*/
     int u_input[16] = {3, 3, 2, 1,
                        2,1, 2, 4,
                        4, 2,1, 2,
                        1, 2, 3, 3}; // sample user input
+    int **solution = gen_solution(size, u_input);
+    if (solution == NULL)
+    {
+        ft_puterr("no solution");
+        return  1;
+    }
+    else
+    {
+        print_matrix(solution, size, size);
+    }
+
+    return 0;
     int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
 
 
 
-    count_rows(matrix, results);
+    //count_rows(matrix, results);
 
 
     printf("%d", checker(u_input, results));

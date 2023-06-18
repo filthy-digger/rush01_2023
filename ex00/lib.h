@@ -41,3 +41,7 @@ void ft_puterr(char* error_detail);
 char*	ft_findspc(char* str);
 
 int	ft_countspc(char* str);
+
+int checker(int input[16], int result[16]);
+
+void count_rows(int arr[4][4], int *dest_arr);

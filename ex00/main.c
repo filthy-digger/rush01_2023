@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "lib.h"
-#include <stdbool.h>
-
 
 //col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
 
@@ -35,7 +33,19 @@
 //"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 int main(int argc, char **argv)
 {
-	int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
+    int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};  // sample matrix
+    int u_input[16] = {3, 3, 2, 1, 2, 1, 2, 4, 4, 2, 1, 2, 1, 2, 3, 3}; // sample user input
+    int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
+
+
+
+    count_rows(arr, results);
+
+
+    printf("%d", checker(u_input, results));
+
+    return 0;
+    int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
 	int badarr[16] = {0, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 5, 2, 0};
    	int *testarr = okarr;
 	if (argc != 2)

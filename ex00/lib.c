@@ -365,3 +365,67 @@ bool check_num(int *arr, int n, size_t size)
 	}
 	return true;
 }
+
+// compare results and user-input
+// returns 0 if perfect match
+// return != 0 when no match
+int checker(int input[16], int result[16])
+{
+    int	i = 0;
+    int count = 0;
+    while (count == 0 && i < 16)
+    {
+        count += input[i] - result[i];
+        i++;
+    }
+    return (count);
+}
+
+// count nbr of boxes seen from all POV (CU CD RR RL)
+// writes results to "results" array in main
+void count_rows(int arr[4][4], int *dest_arr)
+{
+    int i = 0;
+    int j = 0;
+
+    size_t size = 4;
+    int *result_counter = malloc(size * sizeof(int));
+
+    // create tranposed array with column values to check
+    int transp_arr[4][4];
+    transpose_arr(arr, transp_arr);
+
+    // count C-U
+    j = 0;
+    int k = 0;
+    while (j < 4)
+        result_counter[k++] = count_view(transp_arr[j++]);
+
+    // count C-D (reverse tab)
+    j = 0;
+    while (j < 4)
+    {
+        rev_tab(transp_arr[j], 4);
+        result_counter[k++] = count_view(transp_arr[j++]);
+    }
+
+    // count R-L
+    j = 0;
+    while (j < 4)
+        result_counter[k++] = count_view(arr[j++]);
+
+    // count R-R (reverse tab)
+    j = 0;
+    while (j < 4)
+    {
+        rev_tab(arr[j], 4);
+        result_counter[k++] = count_view(arr[j++]);
+    }
+
+    i = 0;
+    while (i < 16)
+    {
+        dest_arr[i] = result_counter[i];
+        i++;
+    }
+}

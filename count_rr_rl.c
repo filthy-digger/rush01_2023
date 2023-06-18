@@ -62,6 +62,7 @@ int count_rows(int arr[4][4])
 int checker(int input[16], int result[16])
 {
     size_t size = 16;
+
 }
 
 
@@ -73,7 +74,7 @@ int main(void)
 {
     int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};
     
-    results
+  //  results
 
 
     printf("%d", count_rows(arr));

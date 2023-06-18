@@ -1,5 +1,10 @@
+#include "lib2.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "includes.h"
 
+// print numbers (char) from int
 void ft_putchar(char c)
 {
 	c = c + 48;
@@ -29,6 +34,9 @@ void	rev_tab(int *tab, int size)
 	}
 }
 
+// display solution table
+//
+// only handle 4x4 table
 void print_matrix(int arr[4][4])
 {
     int i = 0;
@@ -63,6 +71,12 @@ void    transp_matrix(int arr[4][4])
     }
 }
 
+
+// takes an 1 dimensional array of int as input
+// calculates visible boxes for view
+//
+// return - 1 == error
+// return 1, 2, 3,4 == number of visible boxes
 int count_view(int *ch)
 {
     int i = 0;
@@ -123,6 +137,7 @@ void count_row(int arr[4][4])
     }
 }
 
+// print 1d tab for testing purpose
 void print_tab(int arr[16])
 {
     int i = 0;
@@ -162,4 +177,56 @@ int	ft_intcmp(int *s1, int *s2)
 	if (count == 0)
 		count += s1[i] - s2[i];
 	return (count);
+}
+
+int count_rows(int arr[4][4])
+{
+    int i = 0;
+    int j = 0;
+    int counts_rl[16] = {};
+
+    // count R-L
+    while (j < 4)
+    {
+        counts_rl[i] = count_view(arr[i++]);
+        j++;
+    }
+    int k = 0;
+     while (k < 4)
+        printf("%d", &arr[k++]);
+
+
+    // count R-R
+    int r_arr[4];
+    k = 0;
+
+    *r_arr = rev_tab(arr, 4);
+
+    k = 0;
+    while (k < 4)
+    {
+        r_arr[k] = arr[k];
+        k++;
+    }
+    k = 0;
+    while (k < 4)
+        printf("%d", r_arr[i++]);
+    k = 0;
+    printf("   ");
+
+
+    while (j < 4)
+    {
+        counts_rr[i] = count_view(r_arr[i++]);
+        j++;
+    }
+
+
+
+
+    print_tab(counts_rl);
+    write(1, " ", 1);
+    print_tab(counts_rl);
+
+    return (*counts_rl);
 }

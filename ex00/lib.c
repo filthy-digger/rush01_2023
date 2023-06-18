@@ -473,3 +473,50 @@ void count_rows(int arr[4][4], int *dest_arr)
         i++;
     }
 }
+
+bool sudoku(int **matrix, size_t n)
+{
+	n = 4;
+	int i, j = 0;
+	int sum = 0;
+	while (i < n)
+	{
+		ft_sort_int_tab(&matrix[i++][j], n);
+		if (matrix[i][j] != n)
+			return false;
+		sum += matrix[j][i];
+	}
+	
+	int transp_matrix[ft_power(n, 2)]; 
+	transpose_arr(**matrix, transp_matrix);
+
+	return true;
+}
+
+void	ft_sort_int_tab(int *tab, int size)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	k = 1;
+	while (k == 1)
+	{
+		i = 0;
+		k = 0;
+		while (i < size)
+		{
+			j = i + 1;
+			while (j < size)
+			{
+				if (tab[i] > tab[j])
+				{
+					ft_swap(&tab[i], &tab[j]);
+					k = 1;
+				}
+				j++;
+			}
+			i++;
+		}
+	}
+}

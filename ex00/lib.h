@@ -46,11 +46,13 @@ int checker(int input[16], int result[16]);
 
 void count_rows(int arr[4][4], int *dest_arr);
 
-bool sudoku(int **matrix, size_t n);
+
+bool    sudoku(int **matrix, size_t n);
+
+void	ft_sort_int_tab(int *tab, int size);
 
 int **gen_permutations(size_t size);
 
 int** malloc_matrix(size_t cols, size_t rows);
 
 int **malloc_matrix_rows(size_t rows);
-

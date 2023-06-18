@@ -135,20 +135,31 @@ void print_tab(int arr[16])
          
 } */
 
-// takes a 2d array as input
+// takes 2d array as input, and output array to transpose to
 //
 // yield a tranposed array
-int transp_array(int **arr)
+int *transpose_arr(const int arr[4][4], int transp_arr[4][4])
 {
-    int transp_arr[4][4];
-        int j = 0;
-        while (j < 4)
-        {
-            transp_arr[0][j] = arr[j][0];
-            transp_arr[1][j] = arr[j][1];
-            transp_arr[2][j] = arr[j][2];
-            transp_arr[3][j] = arr[j][3];
-            j++;
-        }
-    return (transp_arr);
+    int j = 0;
+    while (j < 4)
+    {
+        transp_arr[0][j] = arr[j][0];
+        transp_arr[1][j] = arr[j][1];
+        transp_arr[2][j] = arr[j][2];
+        transp_arr[3][j] = arr[j][3];
+        j++;
+    }
+    return (*transp_arr);
+}
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (count == 0)
+		count += s1[i] - s2[i];
+	return (count);
 }

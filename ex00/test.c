@@ -1,16 +1,13 @@
-#include <unistd.h>
-#include <stdio.h>
+#include "lib.h"
+
+
+
 
 int count_view(int *ch);
 
-void ft_putchar(char c);
-
 int main(void)
 {
-    int test_arr[4] = {2, 1, 3, 4};
-
-    count_view(test_arr);
-    printf("%d", count_view(test_arr));
-
-    return (0);
+    int arr[] = {1, 4, 3, 2,};
+    int input[16] = {1, 2, 3, 4, 2, 3, 3, 4, 3, 2, 2, 2, 2, 1, 1, 2}
+    printf("%d", count_view(arr));
 }

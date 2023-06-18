@@ -46,8 +46,9 @@ int checker(int input[16], int result[16]);
 
 void count_rows(int arr[4][4], int *dest_arr);
 
-
 bool    sudoku(int **matrix, size_t n);
+
+bool sudoku_alt(int **matrix, size_t n);
 
 void	ft_sort_int_tab(int *tab, int size);
 

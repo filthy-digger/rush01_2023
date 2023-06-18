@@ -56,7 +56,15 @@ int main(int argc, char **argv)
         ft_puterr("bad format\n");
         return 1;
     }
-    int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};  // sample matrix
+    int arr[4][4] = {{1, 2, 3, 4}, {2, 2, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};  // sample matrix
+    if (sudoku_alt( arr, 4 )) {
+        ft_putstr("ok_sudoku\n");
+        return 0;
+    }
+    else {
+        ft_puterr("bad sudoku\n");
+        return 1;
+    }
     int u_input[16] = {3, 3, 2, 1, 2, 1, 2, 4, 4, 2, 1, 2, 1, 2, 3, 3}; // sample user input
     int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
 

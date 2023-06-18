@@ -474,6 +474,29 @@ void count_rows(int arr[4][4], int *dest_arr)
     }
 }
 
+bool sudoku_alt(int **matrix, size_t n)
+{
+    n = 4;
+    int i, j, k = 0;
+    while (i < n)
+    {
+        while (j < n - 1)
+        {
+            k = j + 1;
+            while (k < n)
+            {
+                if (matrix[i][j] == matrix[i][k])
+                    return false;
+                k++;
+            }
+            j++;
+        }
+        i++;
+    }
+    return true;
+}
+
+
 bool sudoku(int **matrix, size_t n)
 {
 	n = 4;
@@ -487,8 +510,8 @@ bool sudoku(int **matrix, size_t n)
 		sum += matrix[j][i];
 	}
 	
-	int transp_matrix[ft_power(n, 2)]; 
-	transpose_arr(**matrix, transp_matrix);
+	int **transp_matrix = malloc_matrix(n, n);
+	transpose_arr(matrix, transp_matrix);
 
 	return true;
 }

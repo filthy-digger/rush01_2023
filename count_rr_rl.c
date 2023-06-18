@@ -11,10 +11,10 @@ int count_view(int *ch);
 void print_tab(int arr[16]);
 void print_matrix(int arr[4][4]);
 int transpose_arr(int arr[4][4], int transp_arr[4][4]);
-
+int strcmp(*s1, *s2);
 
 // count nbr of boxes seen from all POV (WIP for CU and CD)
-void count_rows(int arr[4][4])
+int count_rows(int arr[4][4])
 {
     int i = 0;
     int j = 0;
@@ -53,8 +53,15 @@ void count_rows(int arr[4][4])
         result_counter[k++] = count_view(arr[j++]);
     }
 
-   print_tab(result_counter);
-   write(1, "\n", 1);
+//   print_tab(result_counter);
+//   write(1, "\n", 1);
+
+   return (result_counter[16]);
+}
+
+int checker(int input[16], int result[16])
+{
+    size_t size = 16;
 }
 
 
@@ -65,8 +72,11 @@ void count_rows(int arr[4][4])
 int main(void)
 {
     int arr[4][4] = {{1, 2, 3, 4}, {2, 1, 4 ,3}, {4, 3, 1, 2}, {3, 4, 2, 1}};
+    
+    results
 
-    count_rows(arr);
+
+    printf("%d", count_rows(arr));
 
     return (0);
 }

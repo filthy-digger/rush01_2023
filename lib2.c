@@ -151,3 +151,15 @@ int *transpose_arr(const int arr[4][4], int transp_arr[4][4])
     }
     return (*transp_arr);
 }
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	if (count == 0)
+		count += s1[i] - s2[i];
+	return (count);
+}

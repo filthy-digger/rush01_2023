@@ -1,16 +1,33 @@
-#include <unistd.h>
-#include <stdio.h>
+/*     j = 0;
+    int k = 0;
+    while (j < 4)
+        result_counter[k++] = count_view(transp_arr[j++]);
 
+    j = 0;
+    while (j < 4)
+    {
+        rev_tab(transp_arr[j], 4);
+        result_counter[k++] = count_view(transp_arr[j++]);
+    }
+
+    j = 0;
+    while (j < 4)
+        result_counter[k++] = count_view(arr[j++]);
+
+    j = 0;
+    while (j < 4)
+    {
+        rev_tab(arr[j], 4);
+        result_counter[k++] = count_view(arr[j++]);
+    }
+
+ */
+#include "lib.h"
 int count_view(int *ch);
-
-void ft_putchar(char c);
 
 int main(void)
 {
-    int test_arr[4] = {2, 1, 3, 4};
-
-    count_view(test_arr);
-    printf("%d", count_view(test_arr));
-
-    return (0);
+    int arr[] = {1, 4, 3, 2,};
+   
+    printf("%d", count_view(arr));
 }

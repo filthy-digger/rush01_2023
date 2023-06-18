@@ -6,7 +6,7 @@
 /*   By: agabasov <agabasov@student.42lausanne      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 22:15:33 by agabasov          #+#    #+#             */
-/*   Updated: 2023/06/17 23:34:08 by agabasov         ###   ########.fr       */
+/*   Updated: 2023/06/18 14:20:46 by lfick            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,47 @@ void print_tab(int *arr, size_t size)
 		ft_putchar(arr[i++]);
 }
 
+void ft_puterr(void)
+{
+	char errormsg[7] = "error\n";
+	write(2, errormsg, 7);
+}
+
+//col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
+
+//ft_findspc takes a NUL-terminated string - "str"
+//returns a pointer to the first space(ASCII 32, ' ') in the string
+//otherwise return a NULL
+char*	ft_findspc(char* str)
+{
+	char* res = NULL;
+	int i;
+	i = 0;
+	while (str[i] != '\0')
+	{
+	 if (str[i] == ' ')
+	 {
+		 res = &str[i];
+	 }
+	 i++;
+	}
+	return res;
+}
+
+//ft_countspc takes a NUL-terminated string - "str"
+//returns the number of space(ASCII 32, ' ') chars in the string
+int	ft_countspc(char* str)
+{
+	int count = 0 ;
+
+	return count;
+}
 
 int main(int argc, char **argv)
 {
 	if (argc != 2)
     {
-        char *str = "error\n";
-        write(2, str, ft_strlen(str));
+        ft_puterr();
         return 1;
     }
 	size_t	size = (size_t)(argv[1][0] - 48);

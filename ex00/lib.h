@@ -26,7 +26,7 @@ void count_row(int arr[4][4]);
 
 void    transp_matrix(int arr[4][4]);
 
-int **transpose_arr(const int **arr, int **transp_arr);
+int **transpose_arr(int **arr, int **transp_arr);
 
 bool check_string(char* str, unsigned int n);
 

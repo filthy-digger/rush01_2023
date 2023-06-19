@@ -36,12 +36,14 @@ int main(int argc, char **argv)
 {
     size_t size;
 
-    size = 4;
-    if (argc == 3) {
+    size = 9;
+    if (argc == 3)
+    {
         size = (size_t) (argv[2][0] - 48);
     }
-///    int **permutation_matrix = gen_permutations(size);
-    //print_matrix(permutation_matrix, factorial(size), size);
+    int **permutation_matrix = gen_permutations(size);
+    print_matrix(permutation_matrix, factorial(size), size);
+    return 0;
 
 
     int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
@@ -77,10 +79,10 @@ int main(int argc, char **argv)
             ft_puterr("bad sudoku transpose\n");
         return 1;
     }*/
-    int u_input[16] = {3, 3, 2, 1,
-                       2,1, 2, 4,
-                       4, 2,1, 2,
-                       1, 2, 3, 3}; // sample user input
+    int u_input[16] = {1, 1, 1, 1,
+                       1,1, 1, 1,
+                       1, 1,1, 1,
+                       1, 1, 1, 1}; // sample user input
     int **solution = gen_solution(size, u_input);
     if (solution == NULL)
     {
@@ -92,12 +94,12 @@ int main(int argc, char **argv)
         print_matrix(solution, size, size);
     }
 
-    return 0;
+//    return 0;
     int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
 
 
 
-    //count_rows(matrix, results);
+    count_rows(solution, results);
 
 
     printf("%d", checker(u_input, results));

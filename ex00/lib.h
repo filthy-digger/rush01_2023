@@ -28,7 +28,7 @@ void    transp_matrix(int arr[4][4]);
 
 int **transpose_arr(int **arr, int **transp_arr);
 
-bool check_string(char* str, unsigned int n);
+int * check_string(char* str, unsigned int n);
 
 bool check_num(int *arr, int n, size_t size);
 

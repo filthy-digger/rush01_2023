@@ -12,38 +12,19 @@
 
 #include "lib.h"
 
-//col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
 
-//check_string takes:
-//"str" - a pointer to a NUL-terminated string
-//"n" - square side length
-//
-//returns a boolean:
-//true if the string follows the rush01 format
-//false otherwise
-//
-//format is:
-//"space_count" = n^2 - 1
-//length =  n^2  + "space_count"
-//check_num takes "arr" - array of integers of length "size"
-//checks for bounds of entries of "arr" to be:
-//arr[i] > 0
-//arr[i] <= n
-
-
-//"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 int	main(int argc, char **argv)
 {
     size_t	size;
 
     size = 9;
     if (argc == 3)
-    {
-        size = (size_t) (argv[2][0] - 48);
-    }
-    int **permutation_matrix = gen_permutations(size);
-    print_matrix(permutation_matrix, factorial(size), size);
-    return 0;
+	{
+		size = (size_t) (argv[2][0] - 48);
+		int **permutation_matrix = gen_permutations(size);
+		print_matrix(permutation_matrix, factorial(size), size);
+		return 0;
+	}
 
 
     int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
@@ -54,11 +35,14 @@ int	main(int argc, char **argv)
         ft_puterr(NULL);
         return 1;
     }
-    if (!check_string(argv[1], 4))
+	int* uinput = check_string(argv[1], 4);
+    if (uinput == NULL)
     {
         ft_puterr("bad format\n");
         return 1;
     }
+	print_tab(uinput, ft_power(4, 2));
+	return 0;
 
     /*int arr[4][4] = {{1, 2, 3, 4},
                      {2, 1, 4, 3},

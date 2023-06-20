@@ -422,24 +422,58 @@ int ft_countspc(char *str)
 	return count;
 }
 
-bool check_string(char *str, unsigned int n)
+//col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
+
+//check_string takes:
+//"str" - a pointer to a NUL-terminated string
+//"n" - square side length
+//
+//returns a boolean:
+//true if the string follows the rush01 format
+//false otherwise
+//
+//format is:
+//"space_count" = n^2 - 1
+//length =  n^2  + "space_count"
+//check_num takes "arr" - array of integers of length "size"
+//checks for bounds of entries of "arr" to be:
+//arr[i] > 0
+//arr[i] <= n
+
+
+//"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
+int *check_string(char *str, unsigned int n)
 {
-	size_t format_spc_count = ft_power(n, 2) - 1;
-	size_t format_length = ft_power(n, 2) + format_spc_count;
-	size_t i = 0;
+	size_t format_spc_count;
+	size_t format_length;
+	size_t i;
+	int	*uinput;
+
+	uinput = malloc(ft_power(n, 2) * sizeof(int));
+	format_spc_count = ft_power(n, 2) - 1;
+	format_length = ft_power(n, 2) + format_spc_count;
+	i = 0;
 	if (ft_strlen(str) == format_length && ft_countspc(str) == format_spc_count)
 	{
 		while (i < format_length)
 		{
-			if (!(('0' < str[i] && str[i] <= n + 48) || str[i] == ' '))
+			if ((i % 2 == 0) && ('0' < str[i]) && (str[i] <= n + 48))
 			{
-				return false;
+				uinput[i/2] = str[i] - 48;
+			}
+			else if (!(( i % 2 == 1) && (str[i] == ' ')))
+			{
+				free(uinput);
+				return NULL;
 			}
 			i++;
 		}
-		return true;
+		return uinput;
 	} else
-		return false;
+	{
+		free(uinput);
+		return NULL;
+	}
 }
 
 bool check_num(int *arr, int n, size_t size)

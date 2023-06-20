@@ -5,6 +5,34 @@
 #include <unistd.h>
 #include "includes.h"
 
+void	ft_putnbr_aux(int n)
+{
+	int		r;
+	int		q;
+	char	c;
+
+	q = n / 10;
+	r = n % 10;
+	if (q > 0)
+		ft_putnbr_aux(q);
+	c = (char) (r + 48);
+	write(1, &c, 1);
+}
+
+void	ft_putnbr(int nb)
+{
+	if (-2147483648 == nb)
+		write (1, "-2147483648", 11);
+	else
+	{
+		if (nb < 0)
+		{
+			write(1, "-", 1);
+			nb *= -1;
+		}
+		ft_putnbr_aux(nb);
+	}
+}
 
 size_t ft_strlen(char *str)
 {
@@ -16,13 +44,7 @@ size_t ft_strlen(char *str)
 	return (str - save);
 }
 
-void ft_putstr(char *str)
-{
-	while (str && *str)
-		write(1, (str++), 1);
-}
-
-//pow takes:
+//ft_power takes:
 //a signed integer base - [b]
 //an unsigned exponent - [e]
 //
@@ -54,10 +76,16 @@ void swap_int(int *ptr1, int *ptr2)
 
 int *rev_int_arr(int *arr, size_t size)
 {
-	int *save = arr;
-	for (size_t i = 0; i < size; size--, i++)
+	size_t i;
+
+	i = 0;
+	while (i < size)
+	{
 		swap_int(arr + i, arr + size - 1);
-	return save;
+		size--;
+		i++;
+	}
+	return arr;
 }
 
 //permute takes:
@@ -102,17 +130,20 @@ int *permute(int *prev, int *next, size_t size)
 // print numbers (char) from int
 void ft_putchar(char c)
 {
-	c = c + 48;
 	write(1, &c, 1);
 }
 
-void ft_swap(int *a, int *b)
+void	ft_putstrn(char *str, size_t size)
 {
-	int temp;
+	while(size--)
+		ft_putchar(*(str++));
+}
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
+void	ft_putstr(char *str)
+{
+	size_t size;
+	size = ft_strlen(str);
+	ft_putstrn(str, size);
 }
 
 void rev_tab(int *tab, int size)
@@ -124,7 +155,7 @@ void rev_tab(int *tab, int size)
 	j = size - 1;
 	while (i < j)
 	{
-		ft_swap(&tab[i], &tab[j]);
+		swap_int(&tab[i], &tab[j]);
 		i++;
 		j--;
 	}
@@ -169,23 +200,29 @@ int count_view(int *ch)
 // takes 2d array as input, and output array to transpose to
 //
 // yield a tranposed array
-int **transpose_arr(int **arr, int **transp_arr)
+int **transpose_matrix(int **matrix, int **matrix_transpose,
+					   size_t rows, size_t cols)
 {
-	int j = 0;
-	while (j < 4)
+	size_t j;
+	size_t i;
+
+	i = 0;
+	while (i < rows)
 	{
-		transp_arr[0][j] = arr[j][0];
-		transp_arr[1][j] = arr[j][1];
-		transp_arr[2][j] = arr[j][2];
-		transp_arr[3][j] = arr[j][3];
-		j++;
+		j = 0;
+		while (j < cols)
+		{
+			matrix_transpose[i][j] = matrix[j][i];
+			j++;
+		}
+		i++;
 	}
-	return (transp_arr);
+	return (matrix_transpose);
 }
 
 void print_matrix(int **arr, size_t rows, size_t cols)
 {
-	size_t i = 0;
+	size_t i;
 	size_t j = 0;
 
 	while (j < rows)
@@ -193,7 +230,7 @@ void print_matrix(int **arr, size_t rows, size_t cols)
 		i = 0;
 		while (i < cols)
 		{
-			ft_putchar(arr[j][i]);
+			ft_putnbr(arr[j][i]);
 			if (i < cols - 1)
 				write(1, " ", 1);
 			i++;
@@ -278,8 +315,8 @@ int **gen_solution(size_t size, int *input)
 				for (int l = 0; l < permutations; l++)
 				{
 					solution_matrix[3] = permutation_matrix[l];
-					transpose_arr(solution_matrix,
-								  solution_matrix_transpose);
+					transpose_matrix(solution_matrix,
+									 solution_matrix_transpose, 4, 4);
 					if ((sudoku_alt(solution_matrix, size)
 						 && (sudoku_alt(solution_matrix_transpose, size))))
 					{
@@ -294,14 +331,14 @@ int **gen_solution(size_t size, int *input)
 	return NULL;
 }
 
-void print_tab(int *arr, size_t size)
+void print_arr(int *arr, size_t size)
 {
 	size_t i = 0;
 	while (i < size)
-		ft_putchar(arr[i++]);
+		ft_putnbr(arr[i++]);
 }
 
-void ft_puterr(char *error_detail)
+void puterr(char *error_detail)
 {
 	if (error_detail != NULL)
 	{
@@ -316,9 +353,9 @@ void ft_puterr(char *error_detail)
 }
 
 
-//ft_countspc takes a NUL-terminated string - "str"
+//count_spc takes a NUL-terminated string - "str"
 //returns the number of space(ASCII 32, ' ') chars in the string
-int ft_countspc(char *str)
+int count_spc(char *str)
 {
 	int count = 0;
 	int i;
@@ -335,7 +372,7 @@ int ft_countspc(char *str)
 }
 
 
-int *check_string(char *str, unsigned int n)
+int *parse_uinput(char *str, unsigned int n)
 {
 	size_t format_spc_count;
 	size_t format_length;
@@ -346,7 +383,7 @@ int *check_string(char *str, unsigned int n)
 	format_spc_count = ft_power(n, 2) - 1;
 	format_length = ft_power(n, 2) + format_spc_count;
 	i = 0;
-	if (ft_strlen(str) == format_length && ft_countspc(str) == format_spc_count)
+	if (ft_strlen(str) == format_length && count_spc(str) == format_spc_count)
 	{
 		while (i < format_length)
 		{
@@ -399,7 +436,7 @@ void count_rows(int **arr, int *dest_arr)
 
 	// create tranposed array with column values to check
 	int **transp_arr = malloc_matrix(size, size);
-	transpose_arr(arr, transp_arr);
+	transpose_matrix(arr, transp_arr, 4, 4);
 
 	// count C-U
 	j = 0;
@@ -461,5 +498,6 @@ bool sudoku_alt(int **matrix, size_t n)
 	}
 	return true;
 }
+
 
 

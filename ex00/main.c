@@ -17,7 +17,7 @@ int	main(int argc, char **argv)
 {
 	size_t	size;
 
-	size = 9;
+	size = 4;
 	if (argc == 3)
 	{
 		size = (size_t) (argv[2][0] - 48);
@@ -26,22 +26,29 @@ int	main(int argc, char **argv)
 		return 0;
 	}
 
-
-	int okarr[16] = {1, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 4, 2, 1};
-	int badarr[16] = {0, 2, 3, 4, 2, 1, 4 ,3, 4, 3, 1, 2, 3, 5, 2, 0};
-	int *testarr = okarr;
 	if (argc != 2)
 	{
-		ft_puterr(NULL);
+		puterr(NULL);
 		return 1;
 	}
-	int* uinput = check_string(argv[1], 4);
+	int* uinput = parse_uinput(argv[1], size);
 	if (uinput == NULL)
 	{
-		ft_puterr("bad format\n");
+		puterr("bad format\n");
 		return 1;
 	}
-	print_tab(uinput, ft_power(4, 2));
+//	print_arr(uinput, ft_power((int) size, 2));
+
+	int **solution = gen_solution(size, uinput);
+	if (solution == NULL)
+	{
+		puterr("no solution");
+		return  1;
+	}
+	else
+	{
+		print_matrix(solution, size, size);
+	}
 	return 0;
 
 	/*int arr[4][4] = {{1, 2, 3, 4},
@@ -54,29 +61,19 @@ int	main(int argc, char **argv)
 	matrix[1][0] = 2; matrix[1][1] = 3; matrix[1][2] = 4; matrix[1][3] = 1;
 	matrix[2][0] = 4; matrix[2][1] = 2; matrix[2][2] = 1; matrix[2][3] = 3;
 	matrix[3][0] = 3; matrix[3][1] = 4; matrix[3][2] = 2; matrix[3][3] = 1;
-	transpose_arr(matrix, matrix_transpose);*/
+	transpose_matrix(matrix, matrix_transpose);*/
 
  /*   if (!(sudoku_alt(matrix, size) && (sudoku_alt(matrix_transpose, size)))) {
 		if (!(sudoku_alt(matrix, size)))
 			ft_puterr("bad sudoku\n");
 		if (!(sudoku_alt(matrix_transpose, size)))
-			ft_puterr("bad sudoku transpose\n");
+			puterr("bad sudoku transpose\n");
 		return 1;
 	}*/
 	int u_input[16] = {1, 1, 1, 1,
 					   1,1, 1, 1,
 					   1, 1,1, 1,
 					   1, 1, 1, 1}; // sample user input
-	int **solution = gen_solution(size, u_input);
-	if (solution == NULL)
-	{
-		ft_puterr("no solution");
-		return  1;
-	}
-	else
-	{
-		print_matrix(solution, size, size);
-	}
 
 //    return 0;
 	int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
@@ -94,7 +91,7 @@ int	main(int argc, char **argv)
 	//for(size_t j = 0; j<size; j++)
 	//	*(perm_1+j) = j+1;
 	//rev_int_arr(perm_1, size);
-	//print_tab(perm_1, size);
+	//print_arr(perm_1, size);
 	////int	output[] = permute(perm_0, perm_1, size);
 	//printf("%d\n", *output);
 

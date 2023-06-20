@@ -1,8 +1,8 @@
 #include "includes.h"
 
-size_t ft_strlen(char *str);
+void	ft_putnbr(int nb);
 
-void ft_putstr(char *str);
+size_t ft_strlen(char *str);
 
 int *permute(int *prev, int *next, size_t size);
 
@@ -10,22 +10,30 @@ int ft_power(int b, unsigned int e);
 
 unsigned int factorial(unsigned int n);
 
+void swap_int(int *ptr1, int *ptr2);
+
 int *rev_int_arr(int *arr, size_t size);
 
 void ft_putchar(char c);
+
+void	ft_putstrn(char *str, size_t size);
+
+void	ft_putstr(char *str);
 
 void rev_tab(int *tab, int size);
 
 int count_view(int *ch);
 
-void print_tab(int *arr, size_t size);
+void print_arr(int *arr, size_t size);
 
-int **transpose_arr(int **arr, int **transp_arr);
+int **transpose_matrix(int **matrix, int **matrix_transpose, size_t rows,
+					   size_t cols);
 
-//col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
+//col1up col2up col3up col4up col1down col2down col3down col4down row1left
+// row2left row3left row4left row1right row2right row3right row4right
 //"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 
-//check_string takes:
+//parse_uinput takes:
 //"str" - a pointer to a NUL-terminated string
 //"n" - square side length
 //
@@ -36,13 +44,13 @@ int **transpose_arr(int **arr, int **transp_arr);
 //format is:
 //"space_count" = n^2 - 1
 //length =  n^2  + "space_count"
-int *check_string(char* str, unsigned int n);
+int *parse_uinput(char* str, unsigned int n);
 
 void print_matrix(int **arr, size_t rows, size_t cols);
 
-void ft_puterr(char* error_detail);
+void puterr(char* error_detail);
 
-int	ft_countspc(char* str);
+int	count_spc(char* str);
 
 int checker(int input[16], int result[16]);
 

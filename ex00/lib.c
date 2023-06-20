@@ -167,7 +167,7 @@ void rev_tab(int *tab, int size)
 //
 // return - 1 == error
 // return 1, 2, 3,4 == number of visible boxes
-int count_view(int *ch)
+int count_view(const int *ch)
 {
 	int i = 0;
 	int count = 0;
@@ -297,8 +297,7 @@ int **gen_solution(size_t size, int *input)
 	int **solution_matrix_transpose;
 	int *views;
 
-
-	views = malloc(ft_power(size, 2) * sizeof(int));
+	views = malloc(ft_power((int) size, 2) * sizeof(int));
 	permutation_matrix = gen_permutations(size);
 	solution_matrix = malloc_matrix_rows(size);
 	solution_matrix_transpose = malloc_matrix(size, size);
@@ -316,12 +315,12 @@ int **gen_solution(size_t size, int *input)
 				{
 					solution_matrix[3] = permutation_matrix[l];
 					transpose_matrix(solution_matrix,
-									 solution_matrix_transpose, 4, 4);
+									 solution_matrix_transpose, size, size);
 					if ((sudoku_alt(solution_matrix, size)
 						 && (sudoku_alt(solution_matrix_transpose, size))))
 					{
-						count_rows(solution_matrix, views);
-						if (checker(views, input))
+					count_rows(solution_matrix, views, 4);
+						if (checker( input, views , ft_power((int)size, 2)) == 0)
 							return solution_matrix;
 					}
 				}
@@ -409,14 +408,14 @@ int *parse_uinput(char *str, unsigned int n)
 // compare results and user-input
 // returns 0 if perfect match
 // return != 0 when no match
-int checker(int input[16], int result[16])
+int checker(int *input, int *result, size_t size)
 {
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
-	while (count == 0 && i < 16)
+	while (count == 0 && i < size)
 	{
 		count += input[i] - result[i];
 		i++;
@@ -426,47 +425,66 @@ int checker(int input[16], int result[16])
 
 // count nbr of boxes seen from all POV (CU CD RR RL)
 // writes results to "results" array in main
-void count_rows(int **arr, int *dest_arr)
+void count_rows(int **matrix, int *dest_arr, size_t size)
 {
-	int i = 0;
-	int j = 0;
+	int i;
+	int j;
+	int k;
+	int i_max;
+	int *result_counter;
+	int **matrix_transpose;
+	int **matrix_copy;
 
-	size_t size = 4;
-	int *result_counter = malloc(size * sizeof(int));
+	i_max = ft_power((int) size, 2);
+	result_counter = malloc(i_max * sizeof(int));
 
 	// create tranposed array with column values to check
-	int **transp_arr = malloc_matrix(size, size);
-	transpose_matrix(arr, transp_arr, 4, 4);
+	matrix_transpose = malloc_matrix(size, size);
+	matrix_copy = malloc_matrix(size, size);
+	transpose_matrix(matrix, matrix_transpose, 4, 4);
+	transpose_matrix(matrix_transpose, matrix_copy, 4, 4);
 
 	// count C-U
 	j = 0;
-	int k = 0;
+	k = 0;
 	while (j < 4)
-		result_counter[k++] = count_view(transp_arr[j++]);
+	{
+		result_counter[k] = count_view(matrix_transpose[j]);
+		j++;
+		k++;
+	}
 
 	// count C-D (reverse tab)
 	j = 0;
 	while (j < 4)
 	{
-		rev_tab(transp_arr[j], 4);
-		result_counter[k++] = count_view(transp_arr[j++]);
+		rev_tab(matrix_transpose[j], 4);
+		result_counter[k] = count_view(matrix_transpose[j]);
+		j++;
+		k++;
 	}
 
 	// count R-L
 	j = 0;
 	while (j < 4)
-		result_counter[k++] = count_view((arr[j++]));
+	{
+		result_counter[k] = count_view(matrix[j]);
+		j++;
+		k++;
+	}
 
 	// count R-R (reverse tab)
 	j = 0;
 	while (j < 4)
 	{
-		rev_tab(arr[j], 4);
-		result_counter[k++] = count_view(arr[j++]);
+		rev_tab(matrix_copy[j], 4);
+		result_counter[k] = count_view(matrix_copy[j]);
+		j++;
+		k++;
 	}
 
 	i = 0;
-	while (i < 16)
+	while (i < i_max)
 	{
 		dest_arr[i] = result_counter[i];
 		i++;

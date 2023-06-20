@@ -22,7 +22,7 @@ void	ft_putstr(char *str);
 
 void rev_tab(int *tab, int size);
 
-int count_view(int *ch);
+int count_view(const int *ch);
 
 void print_arr(int *arr, size_t size);
 
@@ -52,9 +52,9 @@ void puterr(char* error_detail);
 
 int	count_spc(char* str);
 
-int checker(int input[16], int result[16]);
+int checker(int *input, int *result, size_t size);
 
-void count_rows(int **arr, int *dest_arr);
+void count_rows(int **matrix, int *dest_arr, size_t size);
 
 bool sudoku_alt(int **matrix, size_t n);
 

@@ -37,7 +37,20 @@ int	main(int argc, char **argv)
 		puterr("bad format\n");
 		return 1;
 	}
-//	print_arr(uinput, ft_power((int) size, 2));
+/*
+	int **matrix = malloc_matrix(size, size);
+	matrix[0][0] = 1; matrix[0][1] = 2; matrix[0][2] = 3; matrix[0][3] = 4;
+	matrix[1][0] = 2; matrix[1][1] = 1; matrix[1][2] = 4; matrix[1][3] = 3;
+	matrix[2][0] = 3; matrix[2][1] = 4; matrix[2][2] = 1; matrix[2][3] = 2;
+	matrix[3][0] = 4; matrix[3][1] = 3; matrix[3][2] = 2; matrix[3][3] = 1;
+	int *results = malloc(ft_power((int)size, 2) * sizeof(int));
+	count_rows(matrix, results, 4);
+	print_arr(results, ft_power((int) size, 2));
+	return  0;
+	printf("%d", checker(uinput, results, ft_power((int)size, 2)));
+	return  0;
+	print_arr(uinput, ft_power((int) size, 2));
+*/
 
 	int **solution = gen_solution(size, uinput);
 	if (solution == NULL)
@@ -59,8 +72,8 @@ int	main(int argc, char **argv)
 	int **matrix_transpose = malloc_matrix(size, size);
 	matrix[0][0] = 1; matrix[0][1] = 2; matrix[0][2] = 3; matrix[0][3] = 4;
 	matrix[1][0] = 2; matrix[1][1] = 3; matrix[1][2] = 4; matrix[1][3] = 1;
-	matrix[2][0] = 4; matrix[2][1] = 2; matrix[2][2] = 1; matrix[2][3] = 3;
-	matrix[3][0] = 3; matrix[3][1] = 4; matrix[3][2] = 2; matrix[3][3] = 1;
+	matrix[2][0] = 3; matrix[2][1] = 4; matrix[2][2] = 1; matrix[2][3] = 2;
+	matrix[3][0] = 4; matrix[3][1] = 1; matrix[3][2] = 2; matrix[3][3] = 3;
 	transpose_matrix(matrix, matrix_transpose);*/
 
  /*   if (!(sudoku_alt(matrix, size) && (sudoku_alt(matrix_transpose, size)))) {
@@ -76,16 +89,18 @@ int	main(int argc, char **argv)
 					   1, 1, 1, 1}; // sample user input
 
 //    return 0;
-	int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
+//	int results[16] = {9, 3, 2, 1, 2, 1, 2, 4, 4, 4, 1, 2, 3, 2, 3, 3}; // empty array to store results
 
 
 
-	count_rows(solution, results);
+/*
+	count_rows(solution, results, 4);
 
 
-	printf("%d", checker(u_input, results));
+	printf("%d", checker(u_input, results, ft_power(size, 2)));
 
 	return 0;
+*/
 
 	//int*	perm_1 = malloc(size * sizeof(int));
 	//for(size_t j = 0; j<size; j++)

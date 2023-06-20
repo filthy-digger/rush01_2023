@@ -32,9 +32,9 @@
 
 
 //"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    size_t size;
+    size_t	size;
 
     size = 9;
     if (argc == 3)

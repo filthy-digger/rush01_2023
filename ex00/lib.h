@@ -52,7 +52,7 @@ void puterr(char* error_detail);
 
 int	count_spc(char* str);
 
-int checker(int *input, int *result, size_t size);
+int checker(const int *input, const int *result, size_t size);
 
 void count_rows(int **matrix, int *dest_arr, size_t size);
 

@@ -408,7 +408,7 @@ int *parse_uinput(char *str, unsigned int n)
 // compare results and user-input
 // returns 0 if perfect match
 // return != 0 when no match
-int checker(int *input, int *result, size_t size)
+int checker(const int *input, const int *result, size_t size)
 {
 	int	i;
 	int	count;

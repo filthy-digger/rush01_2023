@@ -45,14 +45,6 @@ unsigned int factorial(unsigned int n)
 		return n * factorial(n - 1);
 }
 
-unsigned int choose(unsigned int n, unsigned int k)
-{
-	if (k == 0 || n < k)
-		return 0;
-	else
-		return factorial(n) / (factorial(n - k) * factorial(k));
-}
-
 void swap_int(int *ptr1, int *ptr2)
 {
 	int temp = *ptr1;
@@ -67,11 +59,6 @@ int *rev_int_arr(int *arr, size_t size)
 		swap_int(arr + i, arr + size - 1);
 	return save;
 }
-
-//void	swap(void*	ptr1, void* ptr2, size_t size)
-//{
-//	void* temp = malloc(size);
-//}
 
 //permute takes:
 //a pointer to the previous permutation - [prev]
@@ -144,20 +131,6 @@ void rev_tab(int *tab, int size)
 }
 
 
-void transp_matrix(int arr[4][4])
-{
-	int r_arr[4][4];
-	int j = 0;
-	while (j < 4)
-	{
-		r_arr[0][j] = arr[j][0];
-		r_arr[1][j] = arr[j][1];
-		r_arr[2][j] = arr[j][2];
-		r_arr[3][j] = arr[j][3];
-		j++;
-	}
-}
-
 // takes an 1 dimensional array of int as input
 // calculates visible boxes for view
 //
@@ -192,36 +165,6 @@ int count_view(int *ch)
 	return -1;
 }
 
-void count_row(int arr[4][4])
-{
-	size_t size = 4;
-	int *counts_rl = malloc(size * sizeof(int));
-	int *counts_rr = malloc(size * sizeof(int));
-	int j = 0;
-
-	// count R-L
-	while (j < 4)
-	{
-		counts_rl[j] = count_view(arr[j]);
-		j++;
-	}
-
-	// count R-R
-	// reverse tab
-	int i = 0;
-	while (i < 4)
-		rev_tab(arr[i++], 4);
-
-	write(1, "\n", 1);
-
-	j = 0;
-	while (j < 4)
-	{
-		counts_rr[j] = count_view(arr[j]);
-		j++;
-	}
-}
-
 
 // takes 2d array as input, and output array to transpose to
 //
@@ -238,18 +181,6 @@ int **transpose_arr(int **arr, int **transp_arr)
 		j++;
 	}
 	return (transp_arr);
-}
-
-int ft_intcmp(int *s1, int *s2)
-{
-	int i;
-	int count;
-
-	i = 0;
-	count = 0;
-	if (count == 0)
-		count += s1[i] - s2[i];
-	return (count);
 }
 
 void print_matrix(int **arr, size_t rows, size_t cols)
@@ -384,25 +315,6 @@ void ft_puterr(char *error_detail)
 	}
 }
 
-//ft_findspc takes a NUL-terminated string - "str"
-//returns a pointer to the first space(ASCII 32, ' ') in the string
-//otherwise return a NULL
-char *ft_findspc(char *str)
-{
-	char	*res;
-	int		i;
-	res = NULL;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ')
-		{
-			res = &str[i];
-		}
-		i++;
-	}
-	return res;
-}
 
 //ft_countspc takes a NUL-terminated string - "str"
 //returns the number of space(ASCII 32, ' ') chars in the string
@@ -422,26 +334,7 @@ int ft_countspc(char *str)
 	return count;
 }
 
-//col1up col2up col3up col4up col1down col2down col3down col4down row1left row2left row3left row4left row1right row2right row3right row4right
 
-//check_string takes:
-//"str" - a pointer to a NUL-terminated string
-//"n" - square side length
-//
-//returns a boolean:
-//true if the string follows the rush01 format
-//false otherwise
-//
-//format is:
-//"space_count" = n^2 - 1
-//length =  n^2  + "space_count"
-//check_num takes "arr" - array of integers of length "size"
-//checks for bounds of entries of "arr" to be:
-//arr[i] > 0
-//arr[i] <= n
-
-
-//"4 3 2 1 1 2 2 2 4 3 2 1 1 2 2 1"
 int *check_string(char *str, unsigned int n)
 {
 	size_t format_spc_count;
@@ -474,21 +367,6 @@ int *check_string(char *str, unsigned int n)
 		free(uinput);
 		return NULL;
 	}
-}
-
-bool check_num(int *arr, int n, size_t size)
-{
-	size_t i;
-	i = 0;
-	while (i < size)
-	{
-		if (arr[i] <= 0 || arr[i] > n)
-		{
-			return false;
-		}
-		i++;
-	}
-	return true;
 }
 
 // compare results and user-input
@@ -585,49 +463,3 @@ bool sudoku_alt(int **matrix, size_t n)
 }
 
 
-bool sudoku(int **matrix, size_t n)
-{
-	n = 4;
-	int i, j = 0;
-	int sum = 0;
-	while (i < n)
-	{
-		ft_sort_int_tab(&matrix[i++][j], n);
-		if (matrix[i][j] != n)
-			return false;
-		sum += matrix[j][i];
-	}
-
-	int **transp_matrix = malloc_matrix(n, n);
-	transpose_arr(matrix, transp_matrix);
-
-	return true;
-}
-
-void ft_sort_int_tab(int *tab, int size)
-{
-	int i;
-	int j;
-	int k;
-
-	k = 1;
-	while (k == 1)
-	{
-		i = 0;
-		k = 0;
-		while (i < size)
-		{
-			j = i + 1;
-			while (j < size)
-			{
-				if (tab[i] > tab[j])
-				{
-					ft_swap(&tab[i], &tab[j]);
-					k = 1;
-				}
-				j++;
-			}
-			i++;
-		}
-	}
-}

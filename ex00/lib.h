@@ -1,11 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lib.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agabasov <agabasov@student.42lausanne      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/21 14:38:43 by agabasov          #+#    #+#             */
+/*   Updated: 2023/06/21 14:38:44 by agabasov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//
-// Created by Artur Gabasov on 6/21/23.
-//
+#ifndef LIB_H
+# define LIB_H
 
-#ifndef RUSH01_LIB_H
-#define RUSH01_LIB_H
-#include "include_sys.h"
+# include <stdbool.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 void			ft_putnbr(int nb);
 
@@ -63,4 +74,4 @@ int				**malloc_matrix_rows(size_t rows);
 
 int				**gen_solution(size_t size, int *input);
 
-#endif //RUSH01_LIB_H
+#endif // LIB_H

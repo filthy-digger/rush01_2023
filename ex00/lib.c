@@ -303,7 +303,7 @@ int	**gen_solution(size_t size, int *input)
 					if ((sudoku(solution_matrix, size)
 							&& (sudoku(solution_matrix_transpose, size))))
 					{
-						count_rows(solution_matrix, views, 4);
+						count_rows(solution_matrix, views, size);
 						if (checker(input, views, ft_power((int)size, 2)) == 0)
 							return (solution_matrix);
 					}

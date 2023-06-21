@@ -1,9 +1,5 @@
-#include <stdbool.h>
 #include "lib.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "includes.h"
+#include "lib_aux.h"
 
 void	ft_putnbr_aux(int n)
 {
@@ -219,9 +215,10 @@ int **transpose_matrix(int **matrix, int **matrix_transpose,
 
 void print_matrix(int **arr, size_t rows, size_t cols)
 {
-	size_t i;
-	size_t j = 0;
+	size_t	i;
+	size_t	j;
 
+	j = 0;
 	while (j < rows)
 	{
 		i = 0;
@@ -240,6 +237,7 @@ void print_matrix(int **arr, size_t rows, size_t cols)
 int **malloc_matrix_rows(size_t rows)
 {
 	int	**matrix;
+
 	matrix = (int **) malloc(rows * sizeof(int *));
 	if (matrix == NULL)
 		return NULL;
@@ -249,15 +247,18 @@ int **malloc_matrix_rows(size_t rows)
 int **malloc_matrix(size_t cols, size_t rows)
 {
 	int	**matrix;
+	size_t i;
 
 	matrix = malloc_matrix_rows(rows);
 	if (matrix == NULL)
 		return NULL;
-	for (size_t i = 0; i < rows; i++)
+	i = 0;
+	while (i < rows)
 	{
 		matrix[i] = (int *) malloc(cols * sizeof(int));
 		if (matrix[i] == NULL)
 			return NULL;
+		i++;
 	}
 	return matrix;
 }
@@ -266,49 +267,63 @@ int **gen_permutations(size_t size)
 {
 	size_t	cols;
 	size_t	rows;
+	size_t	i;
+	size_t	j;
 	int		**matrix;
 
 	cols = size;
 	rows = factorial(size);
 	matrix = malloc_matrix(cols, rows);
-
 	if (matrix == NULL)
 		return NULL;
-
-	for (size_t i = 0; i < rows; i++)
+	i = 0;
+	while (i < rows)
 	{
+		j = 0;
 		if (i == 0)
-			for (size_t j = 0; j < cols; j++)
+			while (j < cols)
+			{
 				matrix[i][j] = j + 1;
+				j++;
+			}
 		else
 			permute(matrix[i - 1], matrix[i], cols);
+		i++;
 	}
 	return matrix;
 }
 
 int **gen_solution(size_t size, int *input)
 {
-	size_t permutations;
-	int **solution_matrix;
-	int **permutation_matrix;
-	int **solution_matrix_transpose;
-	int *views;
+	size_t	permutations;
+	int		**solution_matrix;
+	int		**permutation_matrix;
+	int		**solution_matrix_transpose;
+	int		*views;
+	int		i;
+	int		j;
+	int		k;
+	int		l;
 
 	views = malloc(ft_power((int) size, 2) * sizeof(int));
 	permutation_matrix = gen_permutations(size);
 	solution_matrix = malloc_matrix_rows(size);
 	solution_matrix_transpose = malloc_matrix(size, size);
 	permutations = factorial(size);
-	for (int i = 0; i < permutations; i++)
+	i = 0;
+	while (i < permutations)
 	{
 		solution_matrix[0] = permutation_matrix[i];
-		for (int j = 0; j < permutations; j++)
+		j = 0;
+		while (j < permutations)
 		{
 			solution_matrix[1] = permutation_matrix[j];
-			for (int k = 0; k < permutations; k++)
+			k = 0;
+			while (k < permutations)
 			{
 				solution_matrix[2] = permutation_matrix[k];
-				for (int l = 0; l < permutations; l++)
+				l = 0;
+				while (l < permutations)
 				{
 					solution_matrix[3] = permutation_matrix[l];
 					transpose_matrix(solution_matrix,
@@ -316,20 +331,26 @@ int **gen_solution(size_t size, int *input)
 					if ((sudoku_alt(solution_matrix, size)
 						 && (sudoku_alt(solution_matrix_transpose, size))))
 					{
-					count_rows(solution_matrix, views, 4);
+						count_rows(solution_matrix, views, 4);
 						if (checker( input, views , ft_power((int)size, 2)) == 0)
 							return solution_matrix;
 					}
+					l++;
 				}
+				k++;
 			}
+			j++;
 		}
+		i++;
 	}
 	return NULL;
 }
 
 void print_arr(int *arr, size_t size)
 {
-	size_t i = 0;
+	size_t i;
+
+	i = 0;
 	while (i < size)
 		ft_putnbr(arr[i++]);
 }
@@ -353,8 +374,10 @@ void puterr(char *error_detail)
 //returns the number of space(ASCII 32, ' ') chars in the string
 int count_spc(char *str)
 {
-	int count = 0;
+	int count;
 	int i;
+
+	count = 0;
 	i = 0;
 	while (str[i] != '\0')
 	{

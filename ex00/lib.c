@@ -172,9 +172,6 @@ int count_view(const int *ch)
 	int i = 0;
 	int count = 0;
 
-	if (ch[i] + ch[i + 1] + ch[i + 2] + ch[i + 3] != 10)
-		return -1;
-
 	if (ch[i] == 4)
 		return 1;
 

@@ -132,20 +132,6 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-void	ft_putstrn(char *str, size_t size)
-{
-	while (size--)
-		ft_putchar(*(str++));
-}
-
-void	ft_putstr(char *str)
-{
-	size_t	size;
-
-	size = ft_strlen(str);
-	ft_putstrn(str, size);
-}
-
 void	rev_tab(int *tab, int size)
 {
 	int	i;
@@ -225,10 +211,10 @@ void	print_matrix(int **arr, size_t rows, size_t cols)
 		{
 			ft_putnbr(arr[j][i]);
 			if (i < cols - 1)
-				write(1, " ", 1);
+				ft_putchar(' ');
 			i++;
 		}
-		write(1, "\n", 1);
+		ft_putchar('\n');
 		j++;
 	}
 }
@@ -327,8 +313,8 @@ int	**gen_solution(size_t size, int *input)
 					solution_matrix[3] = permutation_matrix[l];
 					transpose_matrix(solution_matrix, solution_matrix_transpose,
 						size, size);
-					if ((sudoku_alt(solution_matrix, size)
-							&& (sudoku_alt(solution_matrix_transpose, size))))
+					if ((sudoku(solution_matrix, size)
+						 && (sudoku(solution_matrix_transpose, size))))
 					{
 						count_rows(solution_matrix, views, 4);
 						if (checker(input, views, ft_power((int)size, 2)) == 0)
@@ -343,15 +329,6 @@ int	**gen_solution(size_t size, int *input)
 		i++;
 	}
 	return (NULL);
-}
-
-void	print_arr(int *arr, size_t size)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < size)
-		ft_putnbr(arr[i++]);
 }
 
 void	puterr(char *error_detail)
@@ -371,59 +348,34 @@ void	puterr(char *error_detail)
 	}
 }
 
-// count_spc takes a NUL-terminated string - "str"
-// returns the number of space(ASCII 32, ' ') chars in the string
-int	count_spc(char *str)
-{
-	int	count;
-	int	i;
-
-	count = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == ' ')
-		{
-			count++;
-		}
-		i++;
-	}
-	return (count);
-}
-
 int	*parse_uinput(char *str, unsigned int n)
 {
-	size_t	format_spc_count;
 	size_t	format_length;
 	size_t	i;
 	int		*uinput;
 
 	uinput = malloc(ft_power(n, 2) * sizeof(int));
-	format_spc_count = ft_power(n, 2) - 1;
-	format_length = ft_power(n, 2) + format_spc_count;
+	format_length = ft_power(n, 2) + (ft_power(n, 2) - 1);
 	i = 0;
-	if (ft_strlen(str) == format_length && count_spc(str) == format_spc_count)
-	{
-		while (i < format_length)
-		{
-			if ((i % 2 == 0) && ('0' < str[i]) && (str[i] <= n + 48))
-			{
-				uinput[i / 2] = str[i] - 48;
-			}
-			else if (!((i % 2 == 1) && (str[i] == ' ')))
-			{
-				free(uinput);
-				return (NULL);
-			}
-			i++;
-		}
-		return (uinput);
-	}
-	else
+	if (ft_strlen(str) != format_length)
 	{
 		free(uinput);
 		return (NULL);
 	}
+	while (i < format_length)
+	{
+		if ((i % 2 == 0) && ('0' < str[i]) && (str[i] <= n + 48))
+		{
+			uinput[i / 2] = str[i] - 48;
+		}
+		else if (!((i % 2 == 1) && (str[i] == ' ')))
+		{
+			free(uinput);
+			return (NULL);
+		}
+		i++;
+	}
+	return (uinput);
 }
 
 // compare results and user-input
@@ -506,7 +458,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	}
 }
 
-bool	sudoku_alt(int **matrix, size_t n)
+bool	sudoku(int **matrix, size_t n)
 {
 	int	i;
 	int	j;

@@ -16,15 +16,9 @@ int *rev_int_arr(int *arr, size_t size);
 
 void ft_putchar(char c);
 
-void	ft_putstrn(char *str, size_t size);
-
-void	ft_putstr(char *str);
-
 void rev_tab(int *tab, int size);
 
 int count_view(const int *ch);
-
-void print_arr(int *arr, size_t size);
 
 int **transpose_matrix(int **matrix, int **matrix_transpose, size_t rows,
 					   size_t cols);
@@ -50,13 +44,11 @@ void print_matrix(int **arr, size_t rows, size_t cols);
 
 void puterr(char* error_detail);
 
-int	count_spc(char* str);
-
 int checker(const int *input, const int *result, size_t size);
 
 void count_rows(int **matrix, int *dest_arr, size_t size);
 
-bool sudoku_alt(int **matrix, size_t n);
+bool sudoku(int **matrix, size_t n);
 
 int **gen_permutations(size_t size);
 

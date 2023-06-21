@@ -269,54 +269,63 @@ int	**gen_permutations(size_t size)
 
 int	**gen_solution(size_t size, unsigned int *input)
 {
-	size_t	permutations;
-	int		**solution_matrix;
-	int		**permutation_matrix;
-	int		**solution_matrix_transpose;
-	unsigned int		*views;
-	int		i;
-	int		j;
-	int		k;
-	int		l;
+	size_t permutations;
+	int **solution_matrix;
+	int **permutation_matrix;
+	int **solution_matrix_transpose;
+	unsigned int *views;
+	int h;
+	int i;
+	int j;
+	int k;
+	int l;
 
-	views = malloc(ft_power((int)size, 2) * sizeof(unsigned int));
+	views = malloc(4 * size * sizeof(unsigned int));
 	permutation_matrix = gen_permutations(size);
 	solution_matrix = malloc_matrix_rows(size);
 	solution_matrix_transpose = malloc_matrix(size, size);
 	permutations = factorial(size);
-	i = 0;
-	while (i < permutations)
+/*
+	h = 0;
+	while (h < permutations)
 	{
-		solution_matrix[0] = permutation_matrix[i];
-		j = 0;
-		while (j < permutations)
+		solution_matrix[4] = permutation_matrix[h];
+*/
+		i = 0;
+		while (i < permutations)
 		{
-			solution_matrix[1] = permutation_matrix[j];
-			k = 0;
-			while (k < permutations)
+			solution_matrix[3] = permutation_matrix[i];
+			j = 0;
+			while (j < permutations)
 			{
-				solution_matrix[2] = permutation_matrix[k];
-				l = 0;
-				while (l < permutations)
+				solution_matrix[2] = permutation_matrix[j];
+				k = 0;
+				while (k < permutations)
 				{
-					solution_matrix[3] = permutation_matrix[l];
-					transpose_matrix(solution_matrix, solution_matrix_transpose,
-						size, size);
-					if ((sudoku(solution_matrix, size)
-							&& (sudoku(solution_matrix_transpose, size))))
+					solution_matrix[1] = permutation_matrix[k];
+					l = 0;
+					while (l < permutations)
 					{
-						count_rows(solution_matrix, views, size);
-						if (checker(input, views, ft_power((int)size, 2)))
-							return (solution_matrix);
+						solution_matrix[0] = permutation_matrix[l];
+						transpose_matrix(solution_matrix, solution_matrix_transpose,
+										 size, size);
+						if ((sudoku(solution_matrix, size)
+							 && (sudoku(solution_matrix_transpose, size))))
+						{
+							count_rows(solution_matrix, views, size);
+							if (checker(input, views, ft_power((int)size, 2)))
+								return (solution_matrix);
+						}
+						l++;
 					}
-					l++;
+					k++;
 				}
-				k++;
+				j++;
 			}
-			j++;
+			i++;
 		}
-		i++;
-	}
+//		h++;
+//	}
 	return (NULL);
 }
 
@@ -343,8 +352,8 @@ unsigned int * parse_uinput(char *str, unsigned int n)
 	size_t	i;
 	unsigned int		*uinput;
 
-	uinput = malloc(ft_power((int) n, 2) * sizeof(int));
-	format_length = ft_power((int) n, 2) + (ft_power((int) n, 2) - 1);
+	uinput = malloc(4 * n * sizeof(int));
+	format_length = (4 * n + 4 * n - 1);
 	i = 0;
 	if (ft_strlen(str) != format_length)
 	{
@@ -390,45 +399,41 @@ bool checker(const unsigned int *input, const unsigned int *result, size_t size)
 void	count_rows(int **matrix, unsigned int *dest_arr, size_t size)
 {
 	int	j;
-	int	k;
 	int	**matrix_transpose;
 	int	**matrix_copy;
 
 	matrix_transpose = malloc_matrix(size, size);
 	matrix_copy = malloc_matrix(size, size);
-	transpose_matrix(matrix, matrix_transpose, 4, 4);
-	transpose_matrix(matrix_transpose, matrix_copy, 4, 4);
+	transpose_matrix(matrix, matrix_transpose, size, size);
+	transpose_matrix(matrix_transpose, matrix_copy, size, size);
 	j = 0;
-	k = 0;
-	while (j < 4)
+	while (j < size)
 	{
-		dest_arr[k] = count_visible(matrix_transpose[j], size);
+		*(dest_arr++) = count_visible(matrix_transpose[j], size);
 		j++;
-		k++;
 	}
 	j = 0;
-	while (j < 4)
+	while (j < size)
 	{
-		rev_int_arr(matrix_transpose[j], 4);
-		dest_arr[k] = count_visible(matrix_transpose[j], size);
+		rev_int_arr(matrix_transpose[j], size);
+		*(dest_arr++) = count_visible(matrix_transpose[j], size);
 		j++;
-		k++;
 	}
 	j = 0;
-	while (j < 4)
+	while (j < size)
 	{
-		dest_arr[k] = count_visible(matrix[j], size);
+		*(dest_arr++) = count_visible(matrix[j], size);
 		j++;
-		k++;
 	}
 	j = 0;
-	while (j < 4)
+	while (j < size)
 	{
-		rev_int_arr(matrix_copy[j], 4);
-		dest_arr[k] = count_visible(matrix_copy[j], size);
+		rev_int_arr(matrix_copy[j], size);
+		*(dest_arr++) = count_visible(matrix_copy[j], size);
 		j++;
-		k++;
 	}
+	free(matrix_transpose);
+	free(matrix_copy);
 }
 
 bool	sudoku(int **matrix, size_t n)

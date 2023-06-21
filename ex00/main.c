@@ -18,6 +18,7 @@ int	main(int argc, char **argv)
 	unsigned int		*uinput;
 	int		**solution;
 
+	//"3 4 1 2 2 2 1 3 3 2 2 3 1 4 2 2 2 3 1 3"
 	size = 4;
 	if (argc == 1)
 		puterr("no input");

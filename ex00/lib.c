@@ -132,21 +132,6 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-void	rev_tab(int *tab, int size)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = size - 1;
-	while (i < j)
-	{
-		swap_int(&tab[i], &tab[j]);
-		i++;
-		j--;
-	}
-}
-
 // takes an 1 dimensional array of int as input
 // calculates visible boxes for view
 //
@@ -159,7 +144,7 @@ int	count_view(const int *ch)
 	i = 0;
 	if (ch[i] == 4)
 		return (1);
-	if (((ch[i] > ch[i + 1]) && (ch[i] < ch[i + 2]) && (ch[i + 2] > ch[i + 3]))
+	if ((ch[i] > ch[i + 1]) && (ch[i] < ch[i + 2]) && ch[i + 2] > ch[i + 3]
 		|| ((ch[i] > ch[i + 1]) && (ch[i] > ch[i + 2]) && (ch[i] < ch[i + 3]))
 		|| ((ch[i] < ch[i + 1]) && (ch[i + 1] > ch[i + 2]) && (ch[i + 1] > ch[i
 				+ 3])))
@@ -266,11 +251,13 @@ int	**gen_permutations(size_t size)
 	{
 		j = 0;
 		if (i == 0)
+		{
 			while (j < cols)
 			{
 				matrix[i][j] = j + 1;
 				j++;
 			}
+		}
 		else
 			permute(matrix[i - 1], matrix[i], cols);
 		i++;
@@ -314,7 +301,7 @@ int	**gen_solution(size_t size, int *input)
 					transpose_matrix(solution_matrix, solution_matrix_transpose,
 						size, size);
 					if ((sudoku(solution_matrix, size)
-						 && (sudoku(solution_matrix_transpose, size))))
+							&& (sudoku(solution_matrix_transpose, size))))
 					{
 						count_rows(solution_matrix, views, 4);
 						if (checker(input, views, ft_power((int)size, 2)) == 0)
@@ -428,7 +415,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	j = 0;
 	while (j < 4)
 	{
-		rev_tab(matrix_transpose[j], 4);
+		rev_int_arr(matrix_transpose[j], 4);
 		result_counter[k] = count_view(matrix_transpose[j]);
 		j++;
 		k++;
@@ -445,7 +432,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	j = 0;
 	while (j < 4)
 	{
-		rev_tab(matrix_copy[j], 4);
+		rev_int_arr(matrix_copy[j], 4);
 		result_counter[k] = count_view(matrix_copy[j]);
 		j++;
 		k++;

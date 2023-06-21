@@ -16,8 +16,6 @@ int *rev_int_arr(int *arr, size_t size);
 
 void ft_putchar(char c);
 
-void rev_tab(int *tab, int size);
-
 int count_view(const int *ch);
 
 int **transpose_matrix(int **matrix, int **matrix_transpose, size_t rows,

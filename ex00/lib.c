@@ -387,16 +387,11 @@ int	checker(const int *input, const int *result, size_t size)
 // writes results to "results" array in main
 void	count_rows(int **matrix, int *dest_arr, size_t size)
 {
-	int	i;
 	int	j;
 	int	k;
-	int	i_max;
-	int	*result_counter;
 	int	**matrix_transpose;
 	int	**matrix_copy;
 
-	i_max = ft_power((int)size, 2);
-	result_counter = malloc(i_max * sizeof(int));
 	// create tranposed array with column values to check
 	matrix_transpose = malloc_matrix(size, size);
 	matrix_copy = malloc_matrix(size, size);
@@ -407,7 +402,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	k = 0;
 	while (j < 4)
 	{
-		result_counter[k] = count_view(matrix_transpose[j]);
+		dest_arr[k] = count_view(matrix_transpose[j]);
 		j++;
 		k++;
 	}
@@ -416,7 +411,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	while (j < 4)
 	{
 		rev_int_arr(matrix_transpose[j], 4);
-		result_counter[k] = count_view(matrix_transpose[j]);
+		dest_arr[k] = count_view(matrix_transpose[j]);
 		j++;
 		k++;
 	}
@@ -424,7 +419,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	j = 0;
 	while (j < 4)
 	{
-		result_counter[k] = count_view(matrix[j]);
+		dest_arr[k] = count_view(matrix[j]);
 		j++;
 		k++;
 	}
@@ -433,15 +428,9 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	while (j < 4)
 	{
 		rev_int_arr(matrix_copy[j], 4);
-		result_counter[k] = count_view(matrix_copy[j]);
+		dest_arr[k] = count_view(matrix_copy[j]);
 		j++;
 		k++;
-	}
-	i = 0;
-	while (i < i_max)
-	{
-		dest_arr[i] = result_counter[i];
-		i++;
 	}
 }
 

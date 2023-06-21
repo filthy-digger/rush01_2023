@@ -392,12 +392,10 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	int	**matrix_transpose;
 	int	**matrix_copy;
 
-	// create tranposed array with column values to check
 	matrix_transpose = malloc_matrix(size, size);
 	matrix_copy = malloc_matrix(size, size);
 	transpose_matrix(matrix, matrix_transpose, 4, 4);
 	transpose_matrix(matrix_transpose, matrix_copy, 4, 4);
-	// count C-U
 	j = 0;
 	k = 0;
 	while (j < 4)
@@ -406,7 +404,6 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 		j++;
 		k++;
 	}
-	// count C-D (reverse tab)
 	j = 0;
 	while (j < 4)
 	{
@@ -415,7 +412,6 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 		j++;
 		k++;
 	}
-	// count R-L
 	j = 0;
 	while (j < 4)
 	{
@@ -423,7 +419,6 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 		j++;
 		k++;
 	}
-	// count R-R (reverse tab)
 	j = 0;
 	while (j < 4)
 	{

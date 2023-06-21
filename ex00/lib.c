@@ -133,33 +133,34 @@ void	ft_putchar(char c)
 	write(1, &c, 1);
 }
 
-// takes an 1 dimensional array of int as input
-// calculates visible boxes for view
-//
-// return - 1 == error
-// return 1, 2, 3,4 == number of visible boxes
-int	count_view(const int *ch)
+unsigned int	count_in(const int *arr, size_t size, bool (*pred)(const int, size_t, const int*))
 {
-	int	i;
+	unsigned int counter;
+	size_t i;
 
+	counter = 0;
 	i = 0;
-	if (ch[i] == 4)
-		return (1);
-	if ((ch[i] > ch[i + 1]) && (ch[i] < ch[i + 2]) && ch[i + 2] > ch[i + 3]
-		|| ((ch[i] > ch[i + 1]) && (ch[i] > ch[i + 2]) && (ch[i] < ch[i + 3]))
-		|| ((ch[i] < ch[i + 1]) && (ch[i + 1] > ch[i + 2]) && (ch[i + 1] > ch[i
-				+ 3])))
-		return (2);
-	if ((ch[i] > ch[i + 1] && ch[i] > ch[i + 2] && ch[i + 2] < ch[i + 3])
-		|| (ch[i] < ch[i + 1] && ch[i + 1] > ch[i + 2] && ch[i + 1] < ch[i + 3])
-		|| (ch[i] > ch[i + 1] && ch[i + 1] < ch[i + 2] && ch[i + 1] < ch[i + 3])
-		|| (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] && ch[i + 2] > ch[i
-			+ 3]))
-		return (3);
-	if (ch[i] < ch[i + 1] && ch[i + 1] < ch[i + 2] && ch[i + 2] < ch[i + 3])
-		return (4);
-	return (-1);
+	while (i < size)
+	{
+		counter += (*pred)(arr[i], i, arr);
+		i++;
+	}
+	return (counter);
 }
+
+
+bool is_visible(const int e, size_t i, const int *arr)
+{
+	bool visible = true;
+	while(i > 0 && visible)
+	{
+		i--;
+		visible = arr[i] < e;
+	}
+	return visible;
+}
+
+
 
 // takes 2d array as input, and output array to transpose to
 //
@@ -255,7 +256,7 @@ int	**gen_permutations(size_t size)
 		{
 			while (j < cols)
 			{
-				matrix[i][j] = j + 1;
+				matrix[i][j] = (int) j + 1;
 				j++;
 			}
 		}
@@ -266,19 +267,19 @@ int	**gen_permutations(size_t size)
 	return (matrix);
 }
 
-int	**gen_solution(size_t size, int *input)
+int	**gen_solution(size_t size, unsigned int *input)
 {
 	size_t	permutations;
 	int		**solution_matrix;
 	int		**permutation_matrix;
 	int		**solution_matrix_transpose;
-	int		*views;
+	unsigned int		*views;
 	int		i;
 	int		j;
 	int		k;
 	int		l;
 
-	views = malloc(ft_power((int)size, 2) * sizeof(int));
+	views = malloc(ft_power((int)size, 2) * sizeof(unsigned int));
 	permutation_matrix = gen_permutations(size);
 	solution_matrix = malloc_matrix_rows(size);
 	solution_matrix_transpose = malloc_matrix(size, size);
@@ -305,7 +306,7 @@ int	**gen_solution(size_t size, int *input)
 							&& (sudoku(solution_matrix_transpose, size))))
 					{
 						count_rows(solution_matrix, views, size);
-						if (checker(input, views, ft_power((int)size, 2)) == 0)
+						if (checker(input, views, ft_power((int)size, 2)))
 							return (solution_matrix);
 					}
 					l++;
@@ -336,14 +337,14 @@ void	puterr(char *error_detail)
 	}
 }
 
-int	*parse_uinput(char *str, unsigned int n)
+unsigned int * parse_uinput(char *str, unsigned int n)
 {
 	size_t	format_length;
 	size_t	i;
-	int		*uinput;
+	unsigned int		*uinput;
 
-	uinput = malloc(ft_power(n, 2) * sizeof(int));
-	format_length = ft_power(n, 2) + (ft_power(n, 2) - 1);
+	uinput = malloc(ft_power((int) n, 2) * sizeof(int));
+	format_length = ft_power((int) n, 2) + (ft_power((int) n, 2) - 1);
 	i = 0;
 	if (ft_strlen(str) != format_length)
 	{
@@ -369,24 +370,24 @@ int	*parse_uinput(char *str, unsigned int n)
 // compare results and user-input
 // returns 0 if perfect match
 // return != 0 when no match
-int	checker(const int *input, const int *result, size_t size)
+bool checker(const unsigned int *input, const unsigned int *result, size_t size)
 {
-	int	i;
-	int	count;
+	int		i;
+	bool	count;
 
 	i = 0;
-	count = 0;
-	while (count == 0 && i < size)
+	count = true;
+	while (count && i < size)
 	{
-		count += input[i] - result[i];
+		count = input[i] == result[i];
 		i++;
 	}
 	return (count);
 }
 
-// count nbr of boxes seen from all POV (CU CD RR RL)
+// count_in nbr of boxes seen from all POV (CU CD RR RL)
 // writes results to "results" array in main
-void	count_rows(int **matrix, int *dest_arr, size_t size)
+void	count_rows(int **matrix, unsigned int *dest_arr, size_t size)
 {
 	int	j;
 	int	k;
@@ -401,7 +402,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	k = 0;
 	while (j < 4)
 	{
-		dest_arr[k] = count_view(matrix_transpose[j]);
+		dest_arr[k] = count_visible(matrix_transpose[j], size);
 		j++;
 		k++;
 	}
@@ -409,14 +410,14 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	while (j < 4)
 	{
 		rev_int_arr(matrix_transpose[j], 4);
-		dest_arr[k] = count_view(matrix_transpose[j]);
+		dest_arr[k] = count_visible(matrix_transpose[j], size);
 		j++;
 		k++;
 	}
 	j = 0;
 	while (j < 4)
 	{
-		dest_arr[k] = count_view(matrix[j]);
+		dest_arr[k] = count_visible(matrix[j], size);
 		j++;
 		k++;
 	}
@@ -424,7 +425,7 @@ void	count_rows(int **matrix, int *dest_arr, size_t size)
 	while (j < 4)
 	{
 		rev_int_arr(matrix_copy[j], 4);
-		dest_arr[k] = count_view(matrix_copy[j]);
+		dest_arr[k] = count_visible(matrix_copy[j], size);
 		j++;
 		k++;
 	}
@@ -455,3 +456,9 @@ bool	sudoku(int **matrix, size_t n)
 	}
 	return (true);
 }
+
+unsigned int count_visible(const int *arr, size_t size)
+{
+	return count_in(arr, size, &is_visible);
+}
+

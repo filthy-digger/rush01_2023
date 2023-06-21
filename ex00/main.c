@@ -15,7 +15,7 @@
 int	main(int argc, char **argv)
 {
 	size_t	size;
-	int		*uinput;
+	unsigned int		*uinput;
 	int		**solution;
 
 	size = 4;

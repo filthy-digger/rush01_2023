@@ -14,4 +14,4 @@ add_executable(rush-01
         ex00/lib.c
         ex00/lib.h
         ex00/main.c
-        )
+        ex00/lib_aux.c ex00/lib_aux.h ex00/include_sys.h)

@@ -13,10 +13,7 @@
 #ifndef LIB_H
 # define LIB_H
 
-# include <stdbool.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
+# include "lib_aux.h"
 
 void			ft_putnbr(int nb);
 
@@ -34,7 +31,11 @@ int				*rev_int_arr(int *arr, size_t size);
 
 void			ft_putchar(char c);
 
-int				count_view(const int *ch);
+unsigned int	count_in(const int *arr, size_t size, bool (*pred)(const int, size_t, const int*));
+
+bool	is_visible(int e, size_t i, const int *arr);
+
+unsigned int count_visible(const int *arr, size_t size);
 
 int				**transpose_matrix(int **matrix, int **matrix_transpose,
 					size_t rows, size_t cols);
@@ -54,15 +55,15 @@ int				**transpose_matrix(int **matrix, int **matrix_transpose,
 // format is:
 //"space_count" = n^2 - 1
 // length =  n^2  + "space_count"
-int				*parse_uinput(char *str, unsigned int n);
+unsigned int * parse_uinput(char *str, unsigned int n);
 
 void			print_matrix(int **arr, size_t rows, size_t cols);
 
 void			puterr(char *error_detail);
 
-int				checker(const int *input, const int *result, size_t size);
+bool checker(const unsigned int *input, const unsigned int *result, size_t size);
 
-void			count_rows(int **matrix, int *dest_arr, size_t size);
+void			count_rows(int **matrix, unsigned int *dest_arr, size_t size);
 
 bool			sudoku(int **matrix, size_t n);
 
@@ -72,6 +73,6 @@ int				**malloc_matrix(size_t cols, size_t rows);
 
 int				**malloc_matrix_rows(size_t rows);
 
-int				**gen_solution(size_t size, int *input);
+int				**gen_solution(size_t size, unsigned int *input);
 
 #endif // LIB_H

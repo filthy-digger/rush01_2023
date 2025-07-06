@@ -14,19 +14,18 @@
 
 int	main(int argc, char **argv)
 {
-	size_t	size;
-	unsigned int		*uinput;
-	int		**solution;
+	unsigned int	size;
+	unsigned int	*uinput;
+	int				**solution;
 
 	//"3 4 1 2 2 2 1 3 3 2 2 3 1 4 2 2 2 3 1 3" "1 3 2 3 4 1 2 2 1 2 3 2 3 2 1 2" "2 5 4 1 2 3 1 2 3 2 2 5 1 3 2 2 1 3 3 2"
-	size = 6;
 	if (argc == 1)
 		puterr("no input");
 	else if (argc > 2)
 		puterr("extraneous arguments");
 	else
 	{
-		uinput = parse_uinput(argv[1], size);
+		uinput = parse_uinput(argv[1], &size);
 		if (uinput == NULL)
 		{
 			puterr("bad format\n");

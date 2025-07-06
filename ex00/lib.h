@@ -46,16 +46,14 @@ int				**transpose_matrix(int **matrix, int **matrix_transpose,
 
 // parse_uinput takes:
 //"str" - a pointer to a NUL-terminated string
-//"n" - square side length
+//"n_out" - a pointer to store the calculated square side length
 //
-// returns a boolean:
-// true if the string follows the rush01 format
-// false otherwise
+// returns an array of unsigned int if successful, NULL otherwise
 //
 // format is:
-//"space_count" = n^2 - 1
-// length =  n^2  + "space_count"
-unsigned int * parse_uinput(char *str, unsigned int n);
+// String of integers separated by spaces, where total count is divisible by 4
+// Each integer must be in range [1, n] where n = total_count/4
+unsigned int * parse_uinput(char *str, unsigned int *n_out);
 
 void			print_matrix(int **arr, size_t rows, size_t cols);
 

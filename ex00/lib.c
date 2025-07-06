@@ -339,34 +339,82 @@ void	puterr(char *error_detail)
 	}
 }
 
-unsigned int * parse_uinput(char *str, unsigned int n)
+unsigned int * parse_uinput(char *str, unsigned int *n_out)
 {
-	size_t	format_length;
+	size_t	len;
 	size_t	i;
-	unsigned int		*uinput;
+	size_t	count;
+	unsigned int	*arr;
+	unsigned int	n;
+	char	*endptr;
+	char	*current;
 
-	uinput = malloc(4 * n * sizeof(int));
-	format_length = (4 * n + 4 * n - 1);
-	i = 0;
-	if (ft_strlen(str) != format_length)
-	{
-		free(uinput);
+	if (!str || !n_out)
 		return (NULL);
-	}
-	while (i < format_length)
+	
+	// First pass: count the number of integers
+	count = 0;
+	current = str;
+	while (*current)
 	{
-		if ((i % 2 == 0) && ('0' < str[i]) && (str[i] <= n + 48))
+		// Skip whitespace
+		while (*current == ' ' || *current == '\t' || *current == '\n')
+			current++;
+		if (*current == '\0')
+			break;
+		
+		// Check if we have a valid integer
+		if (*current < '0' || *current > '9')
+			return (NULL);
+		
+		// Skip the integer
+		while (*current >= '0' && *current <= '9')
+			current++;
+		count++;
+	}
+	
+	// Check if count is divisible by 4
+	if (count == 0 || count % 4 != 0)
+		return (NULL);
+	
+	n = count / 4;
+	len = count;
+	
+	// Allocate memory for the array
+	arr = malloc(len * sizeof(unsigned int));
+	if (!arr)
+		return (NULL);
+	
+	// Second pass: parse the integers
+	current = str;
+	i = 0;
+	while (*current && i < len)
+	{
+		// Skip whitespace
+		while (*current == ' ' || *current == '\t' || *current == '\n')
+			current++;
+		if (*current == '\0')
+			break;
+		
+		// Parse the integer
+		arr[i] = (unsigned int)atoi(current);
+		
+		// Validate range: 0 < arr[i] <= n
+		if (arr[i] == 0 || arr[i] > n)
 		{
-			uinput[i / 2] = str[i] - 48;
-		}
-		else if (!((i % 2 == 1) && (str[i] == ' ')))
-		{
-			free(uinput);
+			free(arr);
 			return (NULL);
 		}
+		
+		// Skip the integer
+		while (*current >= '0' && *current <= '9')
+			current++;
 		i++;
 	}
-	return (uinput);
+	
+	// Set the output parameter
+	*n_out = n;
+	return (arr);
 }
 
 // compare results and user-input

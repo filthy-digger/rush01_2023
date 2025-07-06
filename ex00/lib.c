@@ -267,6 +267,42 @@ int	**gen_permutations(size_t size)
 	return (matrix);
 }
 
+// Helper function to recursively generate all combinations of row permutations
+int **gen_solution_recursive(size_t size, unsigned int *input, int **permutation_matrix,
+                           int **solution_matrix, int **solution_matrix_transpose,
+                           unsigned int *views, size_t permutations, int current_row)
+{
+	int **result;
+	int i;
+
+	if (current_row == (int)size)
+	{
+		// All rows filled, check if this is a valid solution
+		transpose_matrix(solution_matrix, solution_matrix_transpose, size, size);
+		if ((sudoku(solution_matrix, size) && (sudoku(solution_matrix_transpose, size))))
+		{
+			count_rows(solution_matrix, views, size);
+			if (checker(input, views, 4 * size))
+				return (solution_matrix);
+		}
+		return (NULL);
+	}
+
+	// Try all permutations for the current row
+	i = 0;
+	while (i < (int)permutations)
+	{
+		solution_matrix[current_row] = permutation_matrix[i];
+		result = gen_solution_recursive(size, input, permutation_matrix,
+		                               solution_matrix, solution_matrix_transpose,
+		                               views, permutations, current_row + 1);
+		if (result != NULL)
+			return (result);
+		i++;
+	}
+	return (NULL);
+}
+
 int	**gen_solution(size_t size, unsigned int *input)
 {
 	size_t permutations;
@@ -274,59 +310,16 @@ int	**gen_solution(size_t size, unsigned int *input)
 	int **permutation_matrix;
 	int **solution_matrix_transpose;
 	unsigned int *views;
-	int h;
-	int i;
-	int j;
-	int k;
-	int l;
 
 	views = malloc(4 * size * sizeof(unsigned int));
 	permutation_matrix = gen_permutations(size);
 	solution_matrix = malloc_matrix_rows(size);
 	solution_matrix_transpose = malloc_matrix(size, size);
 	permutations = factorial(size);
-/*
-	h = 0;
-	while (h < permutations)
-	{
-		solution_matrix[4] = permutation_matrix[h];
-*/
-		i = 0;
-		while (i < permutations)
-		{
-			solution_matrix[3] = permutation_matrix[i];
-			j = 0;
-			while (j < permutations)
-			{
-				solution_matrix[2] = permutation_matrix[j];
-				k = 0;
-				while (k < permutations)
-				{
-					solution_matrix[1] = permutation_matrix[k];
-					l = 0;
-					while (l < permutations)
-					{
-						solution_matrix[0] = permutation_matrix[l];
-						transpose_matrix(solution_matrix, solution_matrix_transpose,
-										 size, size);
-						if ((sudoku(solution_matrix, size)
-							 && (sudoku(solution_matrix_transpose, size))))
-						{
-							count_rows(solution_matrix, views, size);
-							if (checker(input, views, ft_power((int)size, 2)))
-								return (solution_matrix);
-						}
-						l++;
-					}
-					k++;
-				}
-				j++;
-			}
-			i++;
-		}
-//		h++;
-//	}
-	return (NULL);
+
+	return (gen_solution_recursive(size, input, permutation_matrix,
+	                              solution_matrix, solution_matrix_transpose,
+	                              views, permutations, 0));
 }
 
 void	puterr(char *error_detail)
@@ -462,8 +455,189 @@ bool	sudoku(int **matrix, size_t n)
 	return (true);
 }
 
+// Helper function to check if columns are valid without transposing
+bool	sudoku_columns(int **matrix, size_t n)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	j = 0;
+	while (j < n)
+	{
+		i = 0;
+		while (i < n - 1)
+		{
+			k = i + 1;
+			while (k < n)
+			{
+				if (matrix[i][j] == matrix[k][j])
+					return (false);
+				k++;
+			}
+			i++;
+		}
+		j++;
+	}
+	return (true);
+}
+
+// Enhanced sudoku function that checks both rows and columns
+bool	sudoku_complete(int **matrix, size_t n)
+{
+	return (sudoku(matrix, n) && sudoku_columns(matrix, n));
+}
+
+// Optimized count_rows function without unnecessary transpositions
+void	count_rows_optimized(int **matrix, unsigned int *dest_arr, size_t size)
+{
+	int	i;
+	int	j;
+	int	*temp_row;
+
+	temp_row = malloc(size * sizeof(int));
+
+	// Count from top (columns)
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			temp_row[j] = matrix[j][i];
+			j++;
+		}
+		*(dest_arr++) = count_visible(temp_row, size);
+		i++;
+	}
+
+	// Count from bottom (columns reversed)
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			temp_row[j] = matrix[size - 1 - j][i];
+			j++;
+		}
+		*(dest_arr++) = count_visible(temp_row, size);
+		i++;
+	}
+
+	// Count from left (rows)
+	i = 0;
+	while (i < size)
+	{
+		*(dest_arr++) = count_visible(matrix[i], size);
+		i++;
+	}
+
+	// Count from right (rows reversed)
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			temp_row[j] = matrix[i][size - 1 - j];
+			j++;
+		}
+		*(dest_arr++) = count_visible(temp_row, size);
+		i++;
+	}
+
+	free(temp_row);
+}
+
+// Optimized solution generation with early pruning
+int **gen_solution_recursive_optimized(size_t size, unsigned int *input, int **permutation_matrix,
+                                      int **solution_matrix, unsigned int *views,
+                                      size_t permutations, int current_row)
+{
+	int **result;
+	int i;
+
+	if (current_row == (int)size)
+	{
+		// All rows filled, check if this is a valid solution
+		if (sudoku_complete(solution_matrix, size))
+		{
+			count_rows_optimized(solution_matrix, views, size);
+			if (checker(input, views, 4 * size))
+				return (solution_matrix);
+		}
+		return (NULL);
+	}
+
+	// Try all permutations for the current row
+	i = 0;
+	while (i < (int)permutations)
+	{
+		solution_matrix[current_row] = permutation_matrix[i];
+
+		// Early pruning: check if current partial solution is valid
+		if (current_row > 0 && !sudoku_columns_partial(solution_matrix, size, current_row + 1))
+		{
+			i++;
+			continue;
+		}
+
+		result = gen_solution_recursive_optimized(size, input, permutation_matrix,
+		                                         solution_matrix, views,
+		                                         permutations, current_row + 1);
+		if (result != NULL)
+			return (result);
+		i++;
+	}
+	return (NULL);
+}
+
+// Helper function to check columns for partial solutions (early pruning)
+bool	sudoku_columns_partial(int **matrix, size_t n, int filled_rows)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	j = 0;
+	while (j < n)
+	{
+		i = 0;
+		while (i < filled_rows - 1)
+		{
+			k = i + 1;
+			while (k < filled_rows)
+			{
+				if (matrix[i][j] == matrix[k][j])
+					return (false);
+				k++;
+			}
+			i++;
+		}
+		j++;
+	}
+	return (true);
+}
+
 unsigned int count_visible(const int *arr, size_t size)
 {
 	return count_in(arr, size, &is_visible);
 }
 
+// Optimized solution generation without unnecessary transpositions
+int	**gen_solution_optimized(size_t size, unsigned int *input)
+{
+	size_t permutations;
+	int **solution_matrix;
+	int **permutation_matrix;
+	unsigned int *views;
+
+	views = malloc(4 * size * sizeof(unsigned int));
+	permutation_matrix = gen_permutations(size);
+	solution_matrix = malloc_matrix_rows(size);
+	permutations = factorial(size);
+
+	return (gen_solution_recursive_optimized(size, input, permutation_matrix,
+	                                        solution_matrix, views, permutations, 0));
+}

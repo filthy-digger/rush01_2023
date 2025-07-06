@@ -75,4 +75,14 @@ int				**malloc_matrix_rows(size_t rows);
 
 int				**gen_solution(size_t size, unsigned int *input);
 
+// Optimized functions
+bool			sudoku_columns(int **matrix, size_t n);
+bool			sudoku_complete(int **matrix, size_t n);
+void			count_rows_optimized(int **matrix, unsigned int *dest_arr, size_t size);
+int				**gen_solution_recursive_optimized(size_t size, unsigned int *input,
+					int **permutation_matrix, int **solution_matrix, unsigned int *views,
+					size_t permutations, int current_row);
+bool			sudoku_columns_partial(int **matrix, size_t n, int filled_rows);
+int				**gen_solution_optimized(size_t size, unsigned int *input);
+
 #endif // LIB_H
